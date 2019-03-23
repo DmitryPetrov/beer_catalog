@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Add Beer</title>
+</head>
+
+<body>
+  <!-- Include _menu.html -->
+  <!-- <th:block th:include="/_menu"></th:block> -->
+
+  <fieldset>
+    <legend>Add Beer</legend>
+
+    <form th:action="@{/add_beer}" th:object="${addBeerForm}" method="POST">
+      <table border="1">
+        <tr>
+          <th>Bottle count</th></tr>
+        <tr>
+          <th><input th:field="*{count}" type="number" size="6" min="1" step="1"></th></tr>
+          
+        <tr>
+          <th>Name</th></tr>
+        <tr>
+          <th><textarea th:field="*{name}" cols="50" rows="3"></textarea></th></tr>
+          
+        <tr>
+          <th>Rate</th></tr>
+        <tr>
+          <th><input th:field="*{rate}" type="number" size="6" min="0" max="100" step="5"></th></tr>
+                    
+        <tr>
+          <th>Description</th></tr>
+        <tr>
+          <th><textarea th:field="*{description}" cols="50" rows="5"></textarea></th></tr>
+        
+        <tr>
+          <th>Photo</th></tr>
+        <tr>
+          <th><textarea th:field="*{photo}" cols="50" rows="3"></textarea></th></tr>
+        
+        <tr>
+          <th>Star</th></tr>
+        <tr>
+          <th><input th:field="*{star}" type="checkbox"></tr>
+        
+        <tr>
+          <th>Craft</th></tr>
+        <tr>
+          <th><input th:field="*{craft}" type="checkbox"></th></tr>
+        
+        <tr>
+          <th>Brewery</th></tr>
+        <tr>
+          <th>
+            <ul>
+              <li th:each="brewery : ${brewerys}">
+                <input type="checkbox" th:field="*{features}" th:value="${feat}" />
+                <label th:for="${#ids.prev('features')}" 
+                       th:text="#{${'seedstarter.feature.' + feat}}">Heating</label>
+              </li>
+            </ul>
+          </th></tr>
+        
+        <tr>
+          <th>Country</th></tr>
+        <tr>
+          <th>Name</th></tr>
+        
+        <tr>
+          <th>Style</th></tr>
+        <tr>
+          <th>Name</th></tr>
+        
+        <tr></tr>
+
+      </table>
+    </form>
+  </fieldset>
+
+</body>
+</html>

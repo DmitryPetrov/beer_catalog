@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:utext="'All ' + ${name}">..</title>
+</head>
+
+<body>
+  <th:block th:include="/_menu"></th:block>
+
+  <fieldset style="width: 500px;">
+    <legend th:utext="'All ' + ${name}">..</legend>
+    <table border="1">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+      </tr>
+      <tr th:each="item : ${list}">
+        <th:block th:include="/_item"></th:block>
+      </tr>
+    </table>
+  </fieldset>
+
+  <br>
+  <form th:action="@{${add}}" th:object="${item}" method="POST">
+    <fieldset style="width: 500px;">
+      <legend th:utext="'Add ' + ${name}">..</legend>
+      <p>
+        Name <input type="text" th:field="*{name}" /> <input type="submit" value="Add" />
+      </p>
+    </fieldset>
+  </form>
+
+  <br>
+  <form th:action="@{${change}}" th:object="${item}" method="POST">
+    <fieldset style="width: 500px;">
+      <legend th:utext="'Change ' + ${name}">..</legend>
+      <p>
+        Change name from <select th:field="*{id}">
+          <option th:each="item : ${list}" th:value="${item.id}" th:utext="${item.name} + ' (#' + ${item.id} + ')'">..</option>
+        </select>
+      </p>
+      <p>
+        to <input type="text" th:field="*{name}" th:value="${item.name}" /> <input type="submit" value="Change" />
+      </p>
+    </fieldset>
+  </form>
+</body>
+</html>

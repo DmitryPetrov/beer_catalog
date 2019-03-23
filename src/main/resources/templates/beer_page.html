@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>All Beer</title>
+</head>
+
+<body>
+  <th:block th:include="/_menu"></th:block>
+
+  <fieldset>
+    <legend>All Beer</legend>
+    
+    <form th:action="@{/addDepartment}" th:object="${addDepartmentForm}" method="POST">
+    <table border="1">
+      <tr>
+        <th>Bottle count</th>
+        <th>Name</th>
+        <th>Rate</th>
+        <th>Description</th>
+        <th>Star</th>
+        <th>Craft</th>
+      </tr>
+
+      <tr th:each="beer : ${beers}">
+        <th:block th:include="/_beer"></th:block>
+      </tr>
+    </table>
+    </form>
+  </fieldset>
+
+</body>
+</html>
