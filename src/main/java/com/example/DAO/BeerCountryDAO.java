@@ -1,3 +1,4 @@
+
 package com.example.DAO;
 
 import java.util.List;
@@ -21,32 +22,36 @@ public class BeerCountryDAO extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
+
     public List<BeerCountry> getAllBeerCountryTable() {
         String sql = BeerCountryMapper.SELECT_ALL;
         Object[] params = new Object[] {};
         BeerCountryMapper mapper = new BeerCountryMapper();
-        List<BeerCountry> list = this.getJdbcTemplate().query(sql, params,
-                mapper);
+        List<BeerCountry> list =
+                this.getJdbcTemplate().query(sql, params, mapper);
         return list;
     }
+
 
     public List<BeerCountry> getIdBeerByIdCountry(long idCountry) {
         String sql = BeerCountryMapper.SELECT_BY_ID_COUNTRY;
         Object[] params = new Object[] { idCountry };
         BeerCountryMapper mapper = new BeerCountryMapper();
-        List<BeerCountry> list = this.getJdbcTemplate().query(sql, params,
-                mapper);
+        List<BeerCountry> list =
+                this.getJdbcTemplate().query(sql, params, mapper);
         return list;
     }
+
 
     public List<BeerCountry> getIdCountryByIdBeer(long idBeer) {
         String sql = BeerCountryMapper.SELECT_BY_ID_BEER;
         Object[] params = new Object[] { idBeer };
         BeerCountryMapper mapper = new BeerCountryMapper();
-        List<BeerCountry> list = this.getJdbcTemplate().query(sql, params,
-                mapper);
+        List<BeerCountry> list =
+                this.getJdbcTemplate().query(sql, params, mapper);
         return list;
     }
+
 
     public int add(long idBeer, long idCountry) {
         Object[] params = new Object[2];
@@ -58,12 +63,13 @@ public class BeerCountryDAO extends JdbcDaoSupport {
         return countUpdated;
     }
 
+
     public int delete(long idBeer, long idCountry) {
         Object[] params = new Object[2];
         params[0] = idBeer;
         params[1] = idCountry;
 
-        String sql = BeerCountryMapper.DELETE;
+        String sql = BeerCountryMapper.DELETE_BY_ID_BEER;
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }

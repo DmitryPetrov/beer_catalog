@@ -1,3 +1,4 @@
+
 package com.example.mapper;
 
 import java.sql.ResultSet;
@@ -9,13 +10,17 @@ import com.example.model.BeerStyle;
 
 public class BeerStyleMapper implements RowMapper<BeerStyle> {
 
-    public static final String SELECT_ALL = "";
-    public static final String SELECT_BY_ID_BEER = "";
-    public static final String SELECT_BY_ID_STYLE = "";
-    
-    public static final String INSERT = "";
-    public static final String DELETE = "";
-    
+    public static final String SELECT_ALL = "SELECT * FROM beer_style ";
+    public static final String SELECT_BY_ID_BEER =
+            "SELECT * FROM beer_style WHERE id_beer = ?";
+    public static final String SELECT_BY_ID_STYLE =
+            "SELECT * FROM beer_style WHERE id_style = ?";
+
+    public static final String INSERT = "INSERT INTO beer_style VALUES (?, ?) ";
+    public static final String DELETE_BY_ID_BEER =
+            "DELETE FROM beer_style where id_beer = ? ";
+
+
     @Override
     public BeerStyle mapRow(ResultSet rs, int rowNum) throws SQLException {
 

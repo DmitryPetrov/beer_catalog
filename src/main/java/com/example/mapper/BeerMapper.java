@@ -1,3 +1,4 @@
+
 package com.example.mapper;
 
 import java.sql.ResultSet;
@@ -10,14 +11,16 @@ import com.example.model.Beer;
 public class BeerMapper implements RowMapper<Beer> {
 
     public static final String BASE = "";
-    
-    public static final String INSERT = "";
+
+    public static final String INSERT =
+            "INSERT INTO beer (rate, count, star, craft, name, description, photo) VALUES "
+                    + "(?, ?, ?, ?, ?, ?, ?) ";
     public static final String INSERT_WITH_RETURNING = "";
-    
+
     public static final String UPDATE_ALL_ROWS = "";
     public static final String UPDATE_RATE_COUNT_DESCRIPTION = "";
     public static final String UPDATE_PHOTO = "";
-    
+
     public static final String SELECT_ALL = "SELECT * FROM beer ";
     public static final String SELECT_BY_ID = "";
     public static final String SELECT_BY_RATE = "";
@@ -27,8 +30,8 @@ public class BeerMapper implements RowMapper<Beer> {
     public static final String SELECT_BY_STAR = "";
     public static final String SELECT_BY_CRAFT = "";
     public static final String SELECT_BY_BREWERY = "";
-    
-    
+
+
     @Override
     public Beer mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -37,7 +40,7 @@ public class BeerMapper implements RowMapper<Beer> {
         int count = rs.getInt("count");
         boolean star = rs.getBoolean("star");
         boolean craft = rs.getBoolean("craft");
-        
+
         String name = rs.getString("name");
         String description = rs.getString("description");
         String photo = rs.getString("photo");

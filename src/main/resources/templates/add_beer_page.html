@@ -51,28 +51,27 @@
         <tr>
           <th>Brewery</th></tr>
         <tr>
-          <th>
-            <ul>
-              <li th:each="brewery : ${brewerys}">
-                <input type="checkbox" th:field="*{features}" th:value="${feat}" />
-                <label th:for="${#ids.prev('features')}" 
-                       th:text="#{${'seedstarter.feature.' + feat}}">Heating</label>
-              </li>
-            </ul>
-          </th></tr>
+          <th><ul><li th:each="brewery : ${breweryList}">
+                <input type="checkbox" th:field="*{breweries}" th:value="${brewery.id}" />
+                <label th:text="${brewery.name}"></label></li></ul></th></tr>
         
         <tr>
           <th>Country</th></tr>
         <tr>
-          <th>Name</th></tr>
+          <th><ul><li th:each="country : ${countryList}">
+                <input type="checkbox" th:field="*{countries}" th:value="${country.id}" />
+                <label th:text="${country.name}"></label></li></ul></th></tr>
         
         <tr>
           <th>Style</th></tr>
         <tr>
-          <th>Name</th></tr>
+          <th><ul><li th:each="style : ${styleList}">
+                <input type="checkbox" th:field="*{styles}" th:value="${style.id}" />
+                <label th:text="${style.name}"></label></li></ul></th></tr>
         
-        <tr></tr>
-
+        <tr>
+          <th><input type="submit" value="Add"/></th></tr>
+          
       </table>
     </form>
   </fieldset>

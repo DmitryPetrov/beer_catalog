@@ -9,13 +9,15 @@ import com.example.model.BeerSnack;
 
 public class BeerSnackMapper implements RowMapper<BeerSnack> {
 
-    public static final String SELECT_ALL = "";
-    public static final String SELECT_BY_ID_BEER = "";
-    public static final String SELECT_BY_ID_SNACK = "";
-    
-    public static final String INSERT = "";
-    public static final String UPDATE = "";
-    public static final String DELETE = "";
+    public static final String SELECT_ALL = "SELECT * FROM beer_snack ";
+    public static final String SELECT_BY_ID_BEER =
+            "SELECT * FROM beer_snack WHERE id_beer = ?";
+    public static final String SELECT_BY_ID_SNACK =
+            "SELECT * FROM beer_snack WHERE id_snack = ?";
+
+    public static final String INSERT = "INSERT INTO beer_snack VALUES (?, ?) ";
+    public static final String DELETE_BY_ID_BEER =
+            "DELETE FROM beer_snack where id_beer = ? ";
     
     @Override
     public BeerSnack mapRow(ResultSet rs, int rowNum) throws SQLException {

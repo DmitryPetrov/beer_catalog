@@ -63,7 +63,7 @@ public class BeerStyleDAO extends JdbcDaoSupport {
         params[0] = idBeer;
         params[1] = idStyle;
 
-        String sql = BeerStyleMapper.DELETE;
+        String sql = BeerStyleMapper.DELETE_BY_ID_BEER;
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }

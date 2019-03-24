@@ -1,23 +1,34 @@
 package com.example.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.form.AddBeerForm;
 import com.example.mapper.BeerMapper;
 import com.example.model.Beer;
+import com.example.model.Brewery;
+import com.example.model.Country;
+import com.example.model.Style;
 
 @Repository
 @Transactional
 public class BeerDAO extends JdbcDaoSupport {
- 
+
+    
     @Autowired
     public BeerDAO(DataSource dataSource) {
         this.setDataSource(dataSource);
@@ -107,38 +118,76 @@ public class BeerDAO extends JdbcDaoSupport {
     @Autowired
     private BeerCountryDAO beerCountryDAO;
     
+    @Autowired
+    private BeerStyleDAO beerStyleDAO;
+    
     //??????@Transaction
-    public int addBeer(AddBeerForm beerForm) {
-/*        Object[] params = new Object[7];
-        
+    public long addBeer(AddBeerForm beerForm) {
+        Object[] params = new Object[7];
+        System.out.println("0");         
         params[0] = beerForm.getRate();
         params[1] = beerForm.getCount();
-        params[2] = beerForm.isStar();
-        params[3] = beerForm.isCraft();
+        params[2] = String.valueOf(beerForm.isStar()).toUpperCase();
+        params[3] = String.valueOf(beerForm.isCraft()).toUpperCase();
         params[4] = beerForm.getName();
         params[5] = beerForm.getDescription();
         params[6] = beerForm.getPhoto();
         
-        String sql = BeerMapper.INSERT_WITH_RETURNING;
-        Beer beer = this.getJdbcTemplate().update(sql, params);
+        String sql = BeerMapper.INSERT;
+        BeerMapper mapper = new BeerMapper();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        System.out.println(keyHolder + " " + keyHolder.getKey());
+        //Connection connection = getConnection();
         
-        long[] idBrewery = beerForm.getIdBrewery();
-        for(int i = 0; i < idBrewery.length; i++) {
-            beerBreweryDAO.add(beer.getId(), idBrewery[i]);
+        this.getJdbcTemplate().update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, beerForm.getRate());
+                ps.setInt(2, beerForm.getCount());
+                ps.setBoolean(3, beerForm.isStar());
+                ps.setBoolean(4, beerForm.isCraft());
+                ps.setString(5, beerForm.getName());
+                ps.setString(6, beerForm.getDescription());
+                ps.setString(7, beerForm.getPhoto());
+                
+                return ps;
+            }
+        }, keyHolder);
+        
+/*        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("rate", beerForm.getRate())
+                .addValue("count", beerForm.getCount())
+                .addValue("star", String.valueOf(beerForm.isStar()).toUpperCase())
+                .addValue("craft", String.valueOf(beerForm.isCraft()).toUpperCase())
+                .addValue("name", beerForm.getName())
+                .addValue("description", beerForm.getDescription())
+                .addValue("photo", beerForm.getPhoto());
+        this.getnamedParameterJdbcTemplate().update(sql, parameters, holder, new String[] {"id"});*/
+        
+        System.out.println(keyHolder + " " + keyHolder.getKeys().get("id"));
+        
+        long beerId = (long) keyHolder.getKeys().get("id");
+/*        Beer beer = this.getJdbcTemplate().queryForObject(sql, params,
+                mapper);*/
+        
+System.out.println("1");        
+        List<Brewery> breweryList = beerForm.getBreweries();
+        for(Brewery brewery: breweryList) {
+            beerBreweryDAO.add(beerId, brewery.getId());
         }
-        
-        long[] idCountry = beerForm.getIdCountry();
-        for(int i = 0; i < idCountry.length; i++) {
-            beerCountryDAO.add(beer.getId(), idCountry[i]);
+        System.out.println("2");         
+        List<Style> styleList = beerForm.getStyles();
+        for(Style style: styleList) {
+            beerStyleDAO.add(beerId, style.getId());
         }
-        
-        long[] idStyle = beerForm.getIdStyle();
-        for(int i = 0; i < idStyle.length; i++) {
-            beerCountryDAO.add(beer.getId(), idStyle[i]);
+        System.out.println("3");       
+        List<Country> countryList = beerForm.getCountries();
+        for(Country country: countryList) {
+            beerCountryDAO.add(beerId, country.getId());
         }        
-        
-        return countUpdated;*/
-        return 0;
+        System.out.println("4"); 
+        return beerId;
     }
 
   //??????
