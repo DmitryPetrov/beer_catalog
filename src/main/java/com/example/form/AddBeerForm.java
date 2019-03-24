@@ -26,6 +26,8 @@ public class AddBeerForm {
     private List<Style> styles;
 
     {
+        rate = 50;
+        count = 1;
         star = false;
         craft = false;
         name = "";
