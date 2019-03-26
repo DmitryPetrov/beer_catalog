@@ -1,6 +1,7 @@
 
 package com.example.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -43,13 +44,20 @@ public class BeerBreweryDAO extends JdbcDaoSupport {
     }
 
 
-    public List<BeerBrewery> getIdBreweryByIdBeer(long idBeer) {
+    public List<Long> getIdBreweryByIdBeer(long idBeer) {
         String sql = BeerBreweryMapper.SELECT_BY_ID_BEER;
         Object[] params = new Object[] { idBeer };
         BeerBreweryMapper mapper = new BeerBreweryMapper();
         List<BeerBrewery> list =
                 this.getJdbcTemplate().query(sql, params, mapper);
-        return list;
+
+        List<Long> breweriesId = new ArrayList<>();
+
+        for (BeerBrewery beerBrewery : list) {
+            breweriesId.add(beerBrewery.getIdBrewary());
+        }
+
+        return breweriesId;
     }
 
 

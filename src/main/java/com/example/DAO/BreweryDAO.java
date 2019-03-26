@@ -81,7 +81,7 @@ public class BreweryDAO extends JdbcDaoSupport {
         }
         Object[] params = new Object[] { brewery.getName(), brewery.getId() };
 
-        String sql = BreweryMapper.INSERT;
+        String sql = BreweryMapper.UPDATE_NAME_BY_ID;
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }

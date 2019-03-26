@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>All Beer</title>
+</head>
+
+<body>
+  <th:block th:include="/_menu"></th:block>
+
+  <fieldset>
+    <legend>All Beer</legend>
+
+    
+      <table border="1">
+        <tr>
+          <th>Bottle count</th>
+          <th>Name</th>
+          <th>Rate</th>
+          <th>Description</th>
+          <th>Star</th>
+          <th>Craft</th>
+          <th>Change</th>
+        </tr>
+
+        <tr th:each="beer : ${beers}">
+          <td th:utext="${beer.count}">..</td>
+          <td th:utext="${beer.name}">..</td>
+          <td th:utext="${beer.rate}">..</td>
+          <td th:utext="${beer.description}">..</td>
+          <td th:utext="${beer.star}">..</td>
+          <td th:utext="${beer.craft}">..</td>
+          <td>
+            <form th:action="@{/change_beer}" method="GET">
+            <input type="hidden" name="id" th:value="${beer.id}"/>
+              <input type="submit" value="Change" /></form></td>
+        </tr>
+      </table>
+    
+  </fieldset>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 package com.example.model;
 
-public class Beer {
+public class Beer implements HasId{
 
     private static final int MIN_RATE = 0;
     private static final int MAX_RATE = 100;

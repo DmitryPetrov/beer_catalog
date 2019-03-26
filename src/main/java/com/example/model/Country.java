@@ -1,6 +1,6 @@
 package com.example.model;
 
-public class Country {
+public class Country implements HasId, Comparable<Country>{
 
     private long id;
     private String name;
@@ -28,5 +28,15 @@ public class Country {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int compareTo(Country obj) {
+        if (this.id > obj.id) {
+            return 1;
+        } else if (this.id < obj.id) {
+            return -1;
+        }
+        return 0;
     }
 }

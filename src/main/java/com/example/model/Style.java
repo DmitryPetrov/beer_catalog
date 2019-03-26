@@ -1,6 +1,6 @@
 package com.example.model;
 
-public class Style {
+public class Style implements HasId, Comparable<Style>{
 
     private long id;
     private String name;
@@ -28,5 +28,15 @@ public class Style {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int compareTo(Style obj) {
+        if (this.id > obj.id) {
+            return 1;
+        } else if (this.id < obj.id) {
+            return -1;
+        }
+        return 0;
     }
 }

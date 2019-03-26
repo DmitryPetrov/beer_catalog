@@ -10,27 +10,26 @@ import com.example.model.Beer;
 
 public class BeerMapper implements RowMapper<Beer> {
 
-    public static final String BASE = "";
+    public static final String BASE = "SELECT * FROM beer ";
 
-    public static final String INSERT =
-            "INSERT INTO beer (rate, count, star, craft, name, description, photo) VALUES "
-                    + "(?, ?, ?, ?, ?, ?, ?) ";
+    public static final String INSERT = "INSERT INTO beer (rate, count, star, craft, name, description, photo) VALUES "
+            + "(?, ?, ?, ?, ?, ?, ?) ";
     public static final String INSERT_WITH_RETURNING = "";
 
-    public static final String UPDATE_ALL_ROWS = "";
-    public static final String UPDATE_RATE_COUNT_DESCRIPTION = "";
-    public static final String UPDATE_PHOTO = "";
+    public static final String UPDATE = "UPDATE beer SET (rate, count, star, craft, name, description, photo) = (?, ?, ?, ?, ?, ?, ?) WHERE id = ?";
 
     public static final String SELECT_ALL = "SELECT * FROM beer ";
-    public static final String SELECT_BY_ID = "";
-    public static final String SELECT_BY_RATE = "";
-    public static final String SELECT_BY_STYLE = "";
-    public static final String SELECT_BY_COUNT = "";
-    public static final String SELECT_BY_COUNTY = "";
-    public static final String SELECT_BY_STAR = "";
-    public static final String SELECT_BY_CRAFT = "";
-    public static final String SELECT_BY_BREWERY = "";
-
+    public static final String SELECT_BY_ID = "SELECT * FROM beer WHERE id = ? ";
+    public static final String SELECT_BY_RATE = "SELECT * FROM beer WHERE rate > ? ";
+    public static final String SELECT_BY_COUNT = "SELECT * FROM beer WHERE count > ? ";
+    
+    public static final String SELECT_BY_STYLE = "SELECT * FROM beer WHERE style = ? ";
+    public static final String SELECT_BY_BREWERY = "SELECT * FROM beer WHERE brewery = ? ";
+    public static final String SELECT_BY_COUNTY = "SELECT * FROM beer WHERE country = ? ";
+    
+    public static final String SELECT_BY_STAR = "SELECT * FROM beer WHERE star = TRUE ";
+    public static final String SELECT_BY_CRAFT = "SELECT * FROM beer WHERE craft = TRUE ";
+    
 
     @Override
     public Beer mapRow(ResultSet rs, int rowNum) throws SQLException {

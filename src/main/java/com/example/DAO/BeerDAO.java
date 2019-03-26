@@ -18,7 +18,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.form.AddBeerForm;
+import com.example.form.BeerFilterForm;
+import com.example.form.BeerForm;
 import com.example.mapper.BeerMapper;
 import com.example.model.Beer;
 import com.example.model.Brewery;
@@ -78,15 +79,6 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerbyStyle(int idStyle) {
-        String sql = BeerMapper.SELECT_BY_STYLE;
-        Object[] params = new Object[] { idStyle };
-        BeerMapper mapper = new BeerMapper();
-        List<Beer> list = this.getJdbcTemplate().query(sql, params, mapper);
-        return list;
-    }
-
-
     public List<Beer> getBeerByCount(int count) {
         String sql = BeerMapper.SELECT_BY_COUNT;
         Object[] params = new Object[] { count };
@@ -96,7 +88,25 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerbyCountry(int idCountry) {
+    public List<Beer> getBeerByStyle(int idStyle) {
+        String sql = BeerMapper.SELECT_BY_STYLE;
+        Object[] params = new Object[] { idStyle };
+        BeerMapper mapper = new BeerMapper();
+        List<Beer> list = this.getJdbcTemplate().query(sql, params, mapper);
+        return list;
+    }
+
+
+    public List<Beer> getBeerByBrewery(int idBrewery) {
+        String sql = BeerMapper.SELECT_BY_BREWERY;
+        Object[] params = new Object[] { idBrewery };
+        BeerMapper mapper = new BeerMapper();
+        List<Beer> list = this.getJdbcTemplate().query(sql, params, mapper);
+        return list;
+    }
+
+
+    public List<Beer> getBeerByCountry(int idCountry) {
         String sql = BeerMapper.SELECT_BY_COUNTY;
         Object[] params = new Object[] { idCountry };
         BeerMapper mapper = new BeerMapper();
@@ -114,7 +124,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerbyCraft(boolean craft) {
+    public List<Beer> getBeerByCraft(boolean craft) {
         String sql = BeerMapper.SELECT_BY_CRAFT;
         Object[] params = new Object[] { craft };
         BeerMapper mapper = new BeerMapper();
@@ -123,9 +133,46 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerbyBrewery(int idBrewery) {
-        String sql = BeerMapper.SELECT_BY_BREWERY;
-        Object[] params = new Object[] { idBrewery };
+    public List<Beer> getBeerByParams(BeerFilterForm beerFilter) {
+        String sql = BeerMapper.SELECT_ALL;
+
+        sql += "WHERE ";
+
+        sql += "id IN ( ";
+
+        sql += "(SELECT id_beer FROM beer_country WHERE id_country = ?) ";
+
+        sql += "AND ";
+
+        sql += "(SELECT id_beer FROM beer_syle WHERE id_style = ?) ";
+
+        sql += "AND ";
+
+        sql += "(SELECT id_beer FROM beer_brewery WHERE id_brewery = ?) ";
+
+        sql += ") ";
+
+        sql += "AND ";
+
+        sql += "craft = TRUE ";
+
+        sql += "AND ";
+
+        sql += "star = TRUE ";
+
+        sql += "AND ";
+
+        sql += "rate > ? ";
+
+        sql += "AND ";
+
+        sql += "count > ? ";
+
+        sql += "AND ";
+
+        sql += "name LIKE '%?%' ";
+
+        Object[] params = new Object[] {};
         BeerMapper mapper = new BeerMapper();
         List<Beer> list = this.getJdbcTemplate().query(sql, params, mapper);
         return list;
@@ -133,7 +180,7 @@ public class BeerDAO extends JdbcDaoSupport {
 
 
     // @Transaction
-    public long addBeer(AddBeerForm beerForm) {
+    public void addBeer(BeerForm beerForm) {
         Object[] params = new Object[7];
 
         params[0] = beerForm.getRate();
@@ -182,55 +229,42 @@ public class BeerDAO extends JdbcDaoSupport {
         for (Country country : countryList) {
             beerCountryDAO.add(beerId, country.getId());
         }
-
-        return beerId;
     }
 
 
     // ??????
-    public int setBeer(Beer beer) {
+    public void setBeer(BeerForm beerForm) {
         Object[] params = new Object[8];
 
-        params[0] = beer.getRate();
-        params[1] = beer.getCount();
-        params[2] = beer.isStar();
-        params[3] = beer.isCraft();
-        params[4] = beer.getName();
-        params[5] = beer.getDescription();
-        params[6] = beer.getPhoto();
-        params[7] = beer.getId();
+        params[0] = beerForm.getRate();
+        params[1] = beerForm.getCount();
+        params[2] = beerForm.isStar();
+        params[3] = beerForm.isCraft();
+        params[4] = beerForm.getName();
+        params[5] = beerForm.getDescription();
+        params[6] = beerForm.getPhoto();
+        params[7] = beerForm.getId();
 
-        String sql = BeerMapper.UPDATE_ALL_ROWS;
-        int countUpdated = this.getJdbcTemplate().update(sql, params);
-        return countUpdated;
-    }
+        String sql = BeerMapper.UPDATE;
 
+        this.getJdbcTemplate().update(sql, params);
 
-    // ??????
-    public int setRateCountDescription(Beer beer) {
-        Object[] params = new Object[4];
+        long beerId = beerForm.getId();
 
-        params[0] = beer.getRate();
-        params[1] = beer.getCount();
-        params[2] = beer.getDescription();
-        params[3] = beer.getId();
+        List<Brewery> breweryList = beerForm.getBreweries();
+        for (Brewery brewery : breweryList) {
+            beerBreweryDAO.add(beerId, brewery.getId());
+        }
 
-        String sql = BeerMapper.UPDATE_ALL_ROWS;
-        int countUpdated = this.getJdbcTemplate().update(sql, params);
-        return countUpdated;
-    }
+        List<Style> styleList = beerForm.getStyles();
+        for (Style style : styleList) {
+            beerStyleDAO.add(beerId, style.getId());
+        }
 
-
-    // ??????
-    public int setPhoto(Beer beer) {
-        Object[] params = new Object[2];
-
-        params[0] = beer.getPhoto();
-        params[1] = beer.getId();
-
-        String sql = BeerMapper.UPDATE_ALL_ROWS;
-        int countUpdated = this.getJdbcTemplate().update(sql, params);
-        return countUpdated;
+        List<Country> countryList = beerForm.getCountries();
+        for (Country country : countryList) {
+            beerCountryDAO.add(beerId, country.getId());
+        }
     }
 
 }

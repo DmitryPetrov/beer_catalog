@@ -5,4 +5,5 @@
   <td th:utext="${beer.description}">..</td>
   <td th:utext="${beer.star}">..</td>
   <td th:utext="${beer.craft}">..</td>
+  <td><input type="text" th:field="*{id}" th:value="${beer.id}" hidden="true"/> <input type="submit" value="Change" /></td>
 </div>

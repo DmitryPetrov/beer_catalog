@@ -1,30 +1,77 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>All Beer</title>
+<title th:utext="${action} + ' beer'"></title>
 </head>
 
 <body>
   <th:block th:include="/_menu"></th:block>
 
   <fieldset>
-    <legend>All Beer</legend>
-    
-    <form th:action="@{/addDepartment}" th:object="${addDepartmentForm}" method="POST">
-    <table border="1">
-      <tr>
-        <th>Bottle count</th>
-        <th>Name</th>
-        <th>Rate</th>
-        <th>Description</th>
-        <th>Star</th>
-        <th>Craft</th>
-      </tr>
+    <legend th:utext="${action} + ' beer'"></legend>
 
-      <tr th:each="beer : ${beers}">
-        <th:block th:include="/_beer"></th:block>
-      </tr>
-    </table>
+    <form th:action="@{${ref}}" th:object="${addBeerForm}" method="POST">
+      <table border="1">
+        <tr>
+          <th>Bottle count</th>
+          <th><input th:field="*{count}" type="number" size="6" min="1" step="1"></th>
+          <th>Rate</th>
+          <th><input th:field="*{rate}" type="number" size="6" min="0" max="100" step="5"></th>
+        </tr>
+
+        <tr>
+          <th>Name</th>
+          <th colspan="3"><textarea th:field="*{name}" cols="50" rows="2" required></textarea></th>
+        </tr>
+
+        <tr>
+          <th>Description</th>
+          <th colspan="3"><textarea th:field="*{description}" cols="50" rows="3"></textarea></th>
+        </tr>
+
+        <tr>
+          <th>Star</th>
+          <th><input th:field="*{star}" type="checkbox"></th>
+          <th>Craft</th>
+          <th><input th:field="*{craft}" type="checkbox"></th>
+        </tr>
+        
+        <tr>
+          <th>Style</th>
+          <th colspan="3"><ul>
+              <li th:each="element : ${styleOfBeer}"><input type="checkbox" th:field="*{styles}"
+                th:value="${element.key.id}" th:checked="${true}" /> <label th:text="${element.key.name} + ' ' + ${element.value}"></label></li>
+            </ul></th>
+        </tr>
+
+
+        <tr>
+          <th>Country</th>
+          <th colspan="3"><ul>
+              <li th:each="element : ${countyBrewedBeer}"><input type="checkbox" th:field="*{countries}"
+                th:value="${element.key.id}" th:checked="${element.value}" /> <label th:text="${element.key.name} + ' ' + ${element.value}"></label></li>
+            </ul></th>
+        </tr>
+        
+        <tr>
+          <th>Brewery</th>
+          <th colspan="3"><ul>
+              <li th:each="element : ${breweryBrewedBeer}"><input type="checkbox" th:field="*{breweries}"
+                th:value="${element.key.id}" th:checked="${element.value}" /> <label th:text="${element.key.name}"></label></li>
+            </ul></th>
+        </tr>
+
+
+        <tr>
+          <th>Photo</th>
+          <th colspan="3"><textarea th:field="*{photo}" cols="50" rows="1"></textarea></th>
+        </tr>
+
+        <tr>
+          <th colspan="4"><input type="submit" value="Submit" /></th>
+        </tr>
+
+      </table>
     </form>
   </fieldset>
 
