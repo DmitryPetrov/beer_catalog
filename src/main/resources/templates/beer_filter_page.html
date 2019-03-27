@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>All Beer</title>
+</head>
+
+<body>
+  <th:block th:include="/_menu"></th:block>
+
+	<fieldset>
+	<legend>Show by Name</legend>
+		<form th:action="@{/beer/list}" method="GET">
+			<textarea cols="50" rows="2" name="name"></textarea>
+		<input type="submit" value="Show" /></form>
+	</fieldset>
+  
+	<fieldset>
+	<legend>Show by Style</legend>
+		<form th:action="@{/beer/list}" method="GET">
+			<select name="style">
+			<option th:each="style : ${styles}" th:value="${style.id}" th:utext="${style.name}">..</option></select>
+		<input type="submit" value="Show" /></form>
+	</fieldset>
+	  
+	<fieldset>
+	<legend>Show by Country</legend>
+		<form th:action="@{/beer/list}" method="GET">
+			<select name="country">
+			<option th:each="country : ${countries}" th:value="${country.id}" th:utext="${country.name}">..</option></select>
+		<input type="submit" value="Show" /></form>
+	</fieldset>
+	  
+	<fieldset>
+	<legend>Show by Brewery</legend>
+		<form th:action="@{/beer/list}" method="GET">
+			<select name="brewery">
+			<option th:each="brewery : ${breweries}" th:value="${brewery.id}" th:utext="${brewery.name}">..</option></select>
+		<input type="submit" value="Show" /></form>
+	</fieldset>
+	  
+	<fieldset>
+	<legend>Show by Bottle count</legend>
+		<form th:action="@{/beer/list}" method="GET">
+			<input type="number" size="6" min="1" step="1" name="count">
+		<input type="submit" value="Show" /></form>
+	</fieldset>
+	  
+	<fieldset>
+	<legend>Show by Beer rate</legend>
+		<form th:action="@{/beer/list}" method="GET">
+			<input type="number" size="6" min="0" max="100" step="5" name="rate">
+		<input type="submit" value="Show" /></form>
+	</fieldset>
+	  
+	<fieldset>
+	<legend>Show if craft</legend>
+		<form th:action="@{/beer/list}" method="GET">
+			<input type="hidden" name="craft" value="true"/>
+		<input type="submit" value="Show" /></form>
+	</fieldset>
+	  
+	<fieldset>
+	<legend>Show if favorite</legend>
+		<form th:action="@{/beer/list}" method="GET">
+			<input type="hidden" name="star" value="true"/>
+		<input type="submit" value="Show" /></form>
+	</fieldset>
+
+</body>
+</html>

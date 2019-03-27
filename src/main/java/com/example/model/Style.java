@@ -1,6 +1,6 @@
 package com.example.model;
 
-public class Style implements HasId, Comparable<Style>{
+public class Style implements BeerInfo, Comparable<Style>{
 
     private long id;
     private String name;

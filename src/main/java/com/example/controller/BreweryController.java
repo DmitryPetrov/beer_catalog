@@ -15,12 +15,16 @@ import com.example.model.Brewery;
 @Controller
 public class BreweryController {
 
+    private static final String LIST = "/brewery/list";
+    private static final String PUT = "/brewery/put";
+    private static final String ADD = "/brewery/add";
+    
     @Autowired
     private BreweryDAO breweryDAO;
 
 
-    @RequestMapping(value = "/all_brewery", method = RequestMethod.GET)
-    public String showBrewery(Model model) {
+    @RequestMapping(value = LIST, method = RequestMethod.GET)
+    public String list(Model model) {
         List<Brewery> list = breweryDAO.getAllBrewery();
         model.addAttribute("list", list);
 
@@ -28,25 +32,25 @@ public class BreweryController {
         model.addAttribute("item", item);
 
         model.addAttribute("name", "Brewery");
-        model.addAttribute("add", "/add_brewery");
-        model.addAttribute("change", "/change_brewery");
+        model.addAttribute("add", ADD);
+        model.addAttribute("put", PUT);
 
         return "item_page";
     }
 
 
-    @RequestMapping(value = "/change_brewery", method = RequestMethod.POST)
-    public String changeBrewery(Model model, Brewery brewery) {
+    @RequestMapping(value = PUT, method = RequestMethod.POST)
+    public String put(Model model, Brewery brewery) {
         breweryDAO.setBrewery(brewery);
 
-        return "redirect:/all_brewery";
+        return "redirect:" + LIST;
     }
 
 
-    @RequestMapping(value = "/add_brewery", method = RequestMethod.POST)
-    public String addBrewery(Model model, Brewery brewery) {
+    @RequestMapping(value = ADD, method = RequestMethod.POST)
+    public String add(Model model, Brewery brewery) {
         breweryDAO.addBrewery(brewery);
 
-        return "redirect:/all_brewery";
+        return "redirect:" + LIST;
     }
 }

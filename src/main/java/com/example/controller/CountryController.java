@@ -15,12 +15,16 @@ import com.example.model.Country;
 @Controller
 public class CountryController {
 
+    private static final String LIST = "/country/list";
+    private static final String PUT = "/country/put";
+    private static final String ADD = "/country/add";
+    
     @Autowired
     private CountryDAO countryDAO;
 
 
-    @RequestMapping(value = "/all_country", method = RequestMethod.GET)
-    public String showCountries(Model model) {
+    @RequestMapping(value = LIST, method = RequestMethod.GET)
+    public String list(Model model) {
         List<Country> list = countryDAO.getAllCountry();
         model.addAttribute("list", list);
 
@@ -28,25 +32,25 @@ public class CountryController {
         model.addAttribute("item", item);
 
         model.addAttribute("name", "Country");
-        model.addAttribute("add", "/add_country");
-        model.addAttribute("change", "/change_country");
+        model.addAttribute("add", ADD);
+        model.addAttribute("put", PUT);
 
         return "item_page";
     }
 
 
-    @RequestMapping(value = "/change_country", method = RequestMethod.POST)
-    public String changeCountry(Model model, Country country) {
+    @RequestMapping(value = PUT, method = RequestMethod.POST)
+    public String put(Model model, Country country) {
         countryDAO.setCountry(country);
 
-        return "redirect:/all_country";
+        return "redirect:" + LIST;
     }
 
 
-    @RequestMapping(value = "/add_country", method = RequestMethod.POST)
-    public String addCountry(Model model, Country country) {
+    @RequestMapping(value = ADD, method = RequestMethod.POST)
+    public String add(Model model, Country country) {
         countryDAO.addCountry(country);
 
-        return "redirect:/all_country";
+        return "redirect:" + LIST;
     }
 }

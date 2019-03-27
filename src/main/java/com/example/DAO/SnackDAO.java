@@ -1,6 +1,7 @@
 
 package com.example.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mapper.SnackMapper;
+import com.example.model.BeerInfo;
 import com.example.model.Snack;
 
 @Repository
@@ -23,7 +25,6 @@ public class SnackDAO extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-
     public List<Snack> getAllSnack() {
         String sql = SnackMapper.SELECT_ALL;
         Object[] params = new Object[] {};
@@ -32,6 +33,14 @@ public class SnackDAO extends JdbcDaoSupport {
         return list;
     }
 
+    public List<BeerInfo> getAllSnackLikeBeerInfo() {
+        List<Snack> list = getAllSnack();
+        List<BeerInfo> beerInfo = new ArrayList<>();
+        for (Snack snack : list) {
+            beerInfo.add(snack);
+        }
+        return beerInfo;
+    }
 
     public Snack getSnack(long id) {
         String sql = SnackMapper.SELECT_BY_ID;
@@ -39,14 +48,13 @@ public class SnackDAO extends JdbcDaoSupport {
         SnackMapper mapper = new SnackMapper();
 
         try {
-            Snack snack =
-                    this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            Snack snack = this.getJdbcTemplate().queryForObject(sql, params,
+                    mapper);
             return snack;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
-
 
     public Snack getSnack(String name) {
         String sql = SnackMapper.SELECT_BY_NAME;
@@ -54,14 +62,13 @@ public class SnackDAO extends JdbcDaoSupport {
         SnackMapper mapper = new SnackMapper();
 
         try {
-            Snack snack =
-                    this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            Snack snack = this.getJdbcTemplate().queryForObject(sql, params,
+                    mapper);
             return snack;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
-
 
     public int addSnack(Snack snack) {
         if (getSnack(snack.getName()) != null) {
@@ -74,7 +81,6 @@ public class SnackDAO extends JdbcDaoSupport {
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }
-
 
     public int setSnack(Snack snack) {
         if (getSnack(snack.getId()) == null) {

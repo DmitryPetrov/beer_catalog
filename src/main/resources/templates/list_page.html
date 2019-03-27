@@ -17,7 +17,7 @@
           <th>Name</th>
           <th>Rate</th>
           <th>Description</th>
-          <th>Star</th>
+          <th>Favrite</th>
           <th>Craft</th>
           <th>Change</th>
         </tr>
@@ -30,7 +30,7 @@
           <td th:utext="${beer.star}">..</td>
           <td th:utext="${beer.craft}">..</td>
           <td>
-            <form th:action="@{/change_beer}" method="GET">
+            <form th:action="@{/beer/put}" method="GET">
             <input type="hidden" name="id" th:value="${beer.id}"/>
               <input type="submit" value="Change" /></form></td>
         </tr>

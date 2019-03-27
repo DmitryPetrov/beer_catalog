@@ -17,7 +17,7 @@ public class BeerCountryMapper implements RowMapper<BeerCountry> {
             "SELECT * FROM beer_country WHERE id_country = ?";
 
     public static final String INSERT =
-            "INSERT INTO beer_country VALUES (?, ?) ";
+            "INSERT INTO beer_country VALUES (?, ?) ON CONFLICT DO NOTHING";
     public static final String DELETE_BY_ID_BEER =
             "DELETE FROM beer_country where id_beer = ? ";
 

@@ -1,6 +1,7 @@
 
 package com.example.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mapper.StyleMapper;
+import com.example.model.BeerInfo;
 import com.example.model.Style;
 
 @Repository
@@ -23,7 +25,6 @@ public class StyleDAO extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-
     public List<Style> getAllStyle() {
         String sql = StyleMapper.SELECT_ALL;
         Object[] params = new Object[] {};
@@ -32,6 +33,14 @@ public class StyleDAO extends JdbcDaoSupport {
         return list;
     }
 
+    public List<BeerInfo> getAllStyleLikeBeerInfo() {
+        List<Style> list = getAllStyle();
+        List<BeerInfo> beerInfo = new ArrayList<>();
+        for (Style style : list) {
+            beerInfo.add(style);
+        }
+        return beerInfo;
+    }
 
     public Style getStyle(long id) {
         String sql = StyleMapper.SELECT_BY_ID;
@@ -39,35 +48,33 @@ public class StyleDAO extends JdbcDaoSupport {
         StyleMapper mapper = new StyleMapper();
 
         try {
-            Style style =
-                    this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            Style style = this.getJdbcTemplate().queryForObject(sql, params,
+                    mapper);
             return style;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
-    
-    
+
     public Style getStyle(String name) {
         String sql = StyleMapper.SELECT_BY_NAME;
         Object[] params = new Object[] { name };
         StyleMapper mapper = new StyleMapper();
 
         try {
-            Style style =
-                    this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            Style style = this.getJdbcTemplate().queryForObject(sql, params,
+                    mapper);
             return style;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-
     public int addStyle(Style style) {
-        if(getStyle(style.getName()) != null) {
+        if (getStyle(style.getName()) != null) {
             return 0;
         }
-        
+
         Object[] params = new Object[] { style.getName() };
 
         String sql = StyleMapper.INSERT;
@@ -75,12 +82,11 @@ public class StyleDAO extends JdbcDaoSupport {
         return countUpdated;
     }
 
-
     public int setStyle(Style style) {
-        if(getStyle(style.getId()) == null) {
+        if (getStyle(style.getId()) == null) {
             return 0;
         }
-        
+
         Object[] params = new Object[] { style.getName(), style.getId() };
 
         String sql = StyleMapper.UPDATE_NAME_BY_ID;

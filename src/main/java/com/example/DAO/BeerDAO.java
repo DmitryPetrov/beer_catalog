@@ -70,6 +70,15 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
+    public List<Beer> getBeerByName(String name) {
+        String sql = BeerMapper.SELECT_BY_NAME;
+        Object[] params = new Object[] { name };
+        BeerMapper mapper = new BeerMapper();
+        List<Beer> list = this.getJdbcTemplate().query(sql, params, mapper);
+        return list;
+    }
+
+
     public List<Beer> getBeerByRate(int rate) {
         String sql = BeerMapper.SELECT_BY_RATE;
         Object[] params = new Object[] { rate };
@@ -216,24 +225,30 @@ public class BeerDAO extends JdbcDaoSupport {
         long beerId = (long) keyHolder.getKeys().get("id");
 
         List<Brewery> breweryList = beerForm.getBreweries();
-        for (Brewery brewery : breweryList) {
-            beerBreweryDAO.add(beerId, brewery.getId());
+        if (breweryList != null) {
+            for (Brewery brewery : breweryList) {
+                beerBreweryDAO.add(beerId, brewery.getId());
+            }
         }
 
         List<Style> styleList = beerForm.getStyles();
-        for (Style style : styleList) {
-            beerStyleDAO.add(beerId, style.getId());
+        if (styleList != null) {
+            for (Style style : styleList) {
+                beerStyleDAO.add(beerId, style.getId());
+            }
         }
 
         List<Country> countryList = beerForm.getCountries();
-        for (Country country : countryList) {
-            beerCountryDAO.add(beerId, country.getId());
+        if (countryList != null) {
+            for (Country country : countryList) {
+                beerCountryDAO.add(beerId, country.getId());
+            }
         }
     }
 
 
     // ??????
-    public void setBeer(BeerForm beerForm) {
+    public int setBeer(BeerForm beerForm) {
         Object[] params = new Object[8];
 
         params[0] = beerForm.getRate();
@@ -246,25 +261,38 @@ public class BeerDAO extends JdbcDaoSupport {
         params[7] = beerForm.getId();
 
         String sql = BeerMapper.UPDATE;
-
-        this.getJdbcTemplate().update(sql, params);
+        
+        for(Object param: params) {  
+            System.out.println(param);
+        }
+        int countUpdated = this.getJdbcTemplate().update(sql, params);
 
         long beerId = beerForm.getId();
 
         List<Brewery> breweryList = beerForm.getBreweries();
-        for (Brewery brewery : breweryList) {
-            beerBreweryDAO.add(beerId, brewery.getId());
+        if (breweryList != null) {
+            for (Brewery brewery : breweryList) {
+                beerBreweryDAO.add(beerId, brewery.getId());
+            }
         }
 
         List<Style> styleList = beerForm.getStyles();
-        for (Style style : styleList) {
-            beerStyleDAO.add(beerId, style.getId());
+        if (styleList != null) {
+            for (Style style : styleList) {
+                beerStyleDAO.add(beerId, style.getId());
+            }
         }
 
         List<Country> countryList = beerForm.getCountries();
-        for (Country country : countryList) {
-            beerCountryDAO.add(beerId, country.getId());
+        if (countryList != null) {
+            for (Country country : countryList) {
+                beerCountryDAO.add(beerId, country.getId());
+            }
         }
+        System.out.println(breweryList);
+        System.out.println(styleList);
+        System.out.println(countryList);
+        return countUpdated;
     }
 
 }

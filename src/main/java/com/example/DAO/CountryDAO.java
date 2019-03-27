@@ -1,6 +1,7 @@
 
 package com.example.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mapper.CountryMapper;
+import com.example.model.BeerInfo;
 import com.example.model.Country;
 
 @Repository
@@ -23,7 +25,6 @@ public class CountryDAO extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-
     public List<Country> getAllCountry() {
         String sql = CountryMapper.SELECT_ALL;
         Object[] params = new Object[] {};
@@ -32,6 +33,14 @@ public class CountryDAO extends JdbcDaoSupport {
         return list;
     }
 
+    public List<BeerInfo> getAllCountryLikeBeerInfo() {
+        List<Country> list = getAllCountry();
+        List<BeerInfo> beerInfo = new ArrayList<>();
+        for (Country country : list) {
+            beerInfo.add(country);
+        }
+        return beerInfo;
+    }
 
     public Country getCountry(long id) {
         String sql = CountryMapper.SELECT_BY_ID;
@@ -39,14 +48,13 @@ public class CountryDAO extends JdbcDaoSupport {
         CountryMapper mapper = new CountryMapper();
 
         try {
-            Country country =
-                    this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            Country country = this.getJdbcTemplate().queryForObject(sql, params,
+                    mapper);
             return country;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
-
 
     public Country getCountry(String name) {
         String sql = CountryMapper.SELECT_BY_NAME;
@@ -54,14 +62,13 @@ public class CountryDAO extends JdbcDaoSupport {
         CountryMapper mapper = new CountryMapper();
 
         try {
-            Country country =
-                    this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            Country country = this.getJdbcTemplate().queryForObject(sql, params,
+                    mapper);
             return country;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
-
 
     public int addCountry(Country country) {
         if (getCountry(country.getName()) != null) {
@@ -74,7 +81,6 @@ public class CountryDAO extends JdbcDaoSupport {
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }
-
 
     public int setCountry(Country country) {
         if (getCountry(country.getName()) == null) {

@@ -1,6 +1,7 @@
 
 package com.example.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mapper.BreweryMapper;
+import com.example.model.BeerInfo;
 import com.example.model.Brewery;
 
 @Repository
@@ -23,7 +25,6 @@ public class BreweryDAO extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-
     public List<Brewery> getAllBrewery() {
         String sql = BreweryMapper.SELECT_ALL;
         Object[] params = new Object[] {};
@@ -32,6 +33,14 @@ public class BreweryDAO extends JdbcDaoSupport {
         return list;
     }
 
+    public List<BeerInfo> getAllBreweryLikeBeerInfo() {
+        List<Brewery> list = getAllBrewery();
+        List<BeerInfo> beerInfo = new ArrayList<>();
+        for (Brewery brewery : list) {
+            beerInfo.add(brewery);
+        }
+        return beerInfo;
+    }
 
     public Brewery getBrewery(long id) {
         String sql = BreweryMapper.SELECT_BY_ID;
@@ -39,14 +48,13 @@ public class BreweryDAO extends JdbcDaoSupport {
         BreweryMapper mapper = new BreweryMapper();
 
         try {
-            Brewery brewery =
-                    this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            Brewery brewery = this.getJdbcTemplate().queryForObject(sql, params,
+                    mapper);
             return brewery;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
-
 
     public Brewery getBrewery(String name) {
         String sql = BreweryMapper.SELECT_BY_NAME;
@@ -54,14 +62,13 @@ public class BreweryDAO extends JdbcDaoSupport {
         BreweryMapper mapper = new BreweryMapper();
 
         try {
-            Brewery brewery =
-                    this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            Brewery brewery = this.getJdbcTemplate().queryForObject(sql, params,
+                    mapper);
             return brewery;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
-
 
     public int addBrewery(Brewery brewery) {
         if (getBrewery(brewery.getId()) != null) {
@@ -73,7 +80,6 @@ public class BreweryDAO extends JdbcDaoSupport {
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }
-
 
     public int setBrewery(Brewery brewery) {
         if (getBrewery(brewery.getId()) == null) {

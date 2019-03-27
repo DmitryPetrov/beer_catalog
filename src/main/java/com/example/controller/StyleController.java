@@ -15,12 +15,16 @@ import com.example.model.Style;
 @Controller
 public class StyleController {
 
+    private static final String LIST = "/style/list";
+    private static final String PUT = "/style/put";
+    private static final String ADD = "/style/add";
+    
     @Autowired
     private StyleDAO styleDAO;
 
 
-    @RequestMapping(value = "/all_style", method = RequestMethod.GET)
-    public String showStyles(Model model) {
+    @RequestMapping(value = LIST, method = RequestMethod.GET)
+    public String list(Model model) {
         List<Style> list = styleDAO.getAllStyle();
         model.addAttribute("list", list);
 
@@ -28,25 +32,25 @@ public class StyleController {
         model.addAttribute("item", item);
 
         model.addAttribute("name", "Style");
-        model.addAttribute("add", "/add_style");
-        model.addAttribute("change", "/change_style");
+        model.addAttribute("add", ADD);
+        model.addAttribute("put", PUT);
 
         return "item_page";
     }
 
 
-    @RequestMapping(value = "/change_style", method = RequestMethod.POST)
-    public String changeStyle(Model model, Style style) {
+    @RequestMapping(value = PUT, method = RequestMethod.POST)
+    public String put(Model model, Style style) {
         styleDAO.setStyle(style);
 
-        return "redirect:/all_style";
+        return "redirect:" + LIST;
     }
 
 
-    @RequestMapping(value = "/add_style", method = RequestMethod.POST)
-    public String addStyle(Model model, Style style) {
+    @RequestMapping(value = ADD, method = RequestMethod.POST)
+    public String add(Model model, Style style) {
         styleDAO.addStyle(style);
 
-        return "redirect:/all_style";
+        return "redirect:" + LIST;
     }
 }

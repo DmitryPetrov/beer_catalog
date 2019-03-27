@@ -10,15 +10,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.DAO.SnackDAO;
 import com.example.model.Snack;
+
+
 @Controller
 public class SnackController {
-
+    
+    private static final String LIST = "/snack/list";
+    private static final String PUT = "/snack/put";
+    private static final String ADD = "/snack/add";
+    
     @Autowired
     private SnackDAO snackDAO;
 
-
-    @RequestMapping(value = "/all_snack", method = RequestMethod.GET)
-    public String showStyles(Model model) {
+    @RequestMapping(value = LIST, method = RequestMethod.GET)
+    public String list(Model model) {
         List<Snack> list = snackDAO.getAllSnack();
         model.addAttribute("list", list);
 
@@ -26,25 +31,23 @@ public class SnackController {
         model.addAttribute("item", item);
 
         model.addAttribute("name", "Snack");
-        model.addAttribute("add", "/add_snack");
-        model.addAttribute("change", "/change_snack");
+        model.addAttribute("add", ADD);
+        model.addAttribute("put", PUT);
 
         return "item_page";
     }
 
-
-    @RequestMapping(value = "/change_snack", method = RequestMethod.POST)
-    public String changeSnack(Model model, Snack snack) {
+    @RequestMapping(value = PUT, method = RequestMethod.POST)
+    public String put(Model model, Snack snack) {
         snackDAO.setSnack(snack);
 
-        return "redirect:/all_snack";
+        return "redirect:" + LIST;
     }
 
-
-    @RequestMapping(value = "/add_snack", method = RequestMethod.POST)
-    public String addSnack(Model model, Snack snack) {
+    @RequestMapping(value = ADD, method = RequestMethod.POST)
+    public String add(Model model, Snack snack) {
         snackDAO.addSnack(snack);
 
-        return "redirect:/all_snack";
+        return "redirect:" + LIST;
     }
 }

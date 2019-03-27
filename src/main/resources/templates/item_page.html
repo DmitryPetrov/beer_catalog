@@ -15,7 +15,8 @@
         <th>Name</th>
       </tr>
       <tr th:each="item : ${list}">
-        <th:block th:include="/_item"></th:block>
+		  <td th:utext="${item.id}">..</td>
+		  <td th:utext="${item.name}">..</td>
       </tr>
     </table>
   </fieldset>
@@ -31,7 +32,7 @@
   </form>
 
   <br>
-  <form th:action="@{${change}}" th:object="${item}" method="POST">
+  <form th:action="@{${put}}" th:object="${item}" method="POST">
     <fieldset style="width: 500px;">
       <legend th:utext="'Change ' + ${name}">..</legend>
       <p>
