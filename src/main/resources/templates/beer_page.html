@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title th:utext="${action} + ' beer'"></title>
+<link th:href="@{../css/style.css}" rel="stylesheet">
 </head>
 
 <body>
@@ -10,8 +11,8 @@
   <fieldset>
     <legend th:utext="${action} + ' beer'"></legend>
 
-    <form th:action="@{${ref}}" th:object="${beerForm}" method="POST">
-      <table border="1">
+    <form th:action="@{${ref_put}}" th:object="${beerForm}" method="POST">
+      <table>
         <tr>
           <th>Bottle count</th>
           <th><input th:field="*{count}" type="number" size="6" min="1" step="1"></th>
@@ -72,17 +73,25 @@
             </ul></th>
         </tr>
 
-
         <tr>
           <th>Photo</th>
           <th colspan="3"><textarea th:field="*{photo}" cols="50" rows="1"></textarea></th>
         </tr>
 
         <tr>
-          <th colspan="4"><input type="hidden" th:field="*{id}" th:value="${id}"/><input type="submit" value="Submit" /></th>
+          <th colspan="4" class="submit"><input type="hidden" th:field="*{id}" th:value="${id}"/><input type="submit" value="Submit" /></th>
         </tr>
 
       </table>
+    </form>
+  </fieldset>
+    
+  <br>  
+  <fieldset>
+  <legend>! DELETE beer !</legend>
+   <form th:action="@{${ref_delete}}" th:object="${beerForm}" method="POST">
+		<input type="hidden" th:field="*{id}" th:value="${id}"/>
+		<input type="submit" value="DELETE" />
     </form>
   </fieldset>
 

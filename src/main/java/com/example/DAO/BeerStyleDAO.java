@@ -22,33 +22,35 @@ public class BeerStyleDAO extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-    public List<BeerStyle> getAllBeerStyleTable() {
+    public List<BeerStyle> getAll() {
         String sql = BeerStyleMapper.SELECT_ALL;
         Object[] params = new Object[] {};
         BeerStyleMapper mapper = new BeerStyleMapper();
-        List<BeerStyle> list = this.getJdbcTemplate().query(sql, params,
-                mapper);
+        List<BeerStyle> list = this.getJdbcTemplate().query(sql, params, mapper);
         return list;
     }
 
-    public List<BeerStyle> getIdBeerByIdStyle(long idStyle) {
+    public List<Long> getIdBeerByIdStyle(long id) {
         String sql = BeerStyleMapper.SELECT_BY_ID_STYLE;
-        Object[] params = new Object[] { idStyle };
+        Object[] params = new Object[] { id };
         BeerStyleMapper mapper = new BeerStyleMapper();
-        List<BeerStyle> list = this.getJdbcTemplate().query(sql, params,
-                mapper);
-        return list;
+        List<BeerStyle> list = this.getJdbcTemplate().query(sql, params, mapper);
+
+        List<Long> beerId = new ArrayList<>();
+        for (BeerStyle beerStyle : list) {
+            beerId.add(beerStyle.getIdBeer());
+        }
+
+        return beerId;
     }
 
-    public List<Long> getIdStyleByIdBeer(long idBeer) {
+    public List<Long> getIdStyleByIdBeer(long id) {
         String sql = BeerStyleMapper.SELECT_BY_ID_BEER;
-        Object[] params = new Object[] { idBeer };
+        Object[] params = new Object[] { id };
         BeerStyleMapper mapper = new BeerStyleMapper();
-        List<BeerStyle> list = this.getJdbcTemplate().query(sql, params,
-                mapper);
-        
-        List<Long> stylesId = new ArrayList<>();
+        List<BeerStyle> list = this.getJdbcTemplate().query(sql, params, mapper);
 
+        List<Long> stylesId = new ArrayList<>();
         for (BeerStyle beerStyle : list) {
             stylesId.add(beerStyle.getIdStyle());
         }
@@ -57,21 +59,22 @@ public class BeerStyleDAO extends JdbcDaoSupport {
     }
 
     public int add(long idBeer, long idStyle) {
-        Object[] params = new Object[2];
-        params[0] = idBeer;
-        params[1] = idStyle;
-
         String sql = BeerStyleMapper.INSERT;
+        Object[] params = new Object[] { idBeer, idStyle };
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }
 
-    public int delete(long idBeer, long idStyle) {
-        Object[] params = new Object[2];
-        params[0] = idBeer;
-        params[1] = idStyle;
-
+    public int deleteByIdBeer(long id) {
         String sql = BeerStyleMapper.DELETE_BY_ID_BEER;
+        Object[] params = new Object[] { id };
+        int countUpdated = this.getJdbcTemplate().update(sql, params);
+        return countUpdated;
+    }
+
+    public int deleteByIdStyle(long id) {
+        String sql = BeerStyleMapper.DELETE_BY_ID_STYLE;
+        Object[] params = new Object[] { id };
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }

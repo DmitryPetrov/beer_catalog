@@ -20,7 +20,9 @@ public class BeerCountryMapper implements RowMapper<BeerCountry> {
             "INSERT INTO beer_country VALUES (?, ?) ON CONFLICT DO NOTHING";
     public static final String DELETE_BY_ID_BEER =
             "DELETE FROM beer_country where id_beer = ? ";
-
+    public static final String DELETE_BY_ID_COUNTRY =
+            "DELETE FROM beer_country where id_country = ? ";
+    
 
     @Override
     public BeerCountry mapRow(ResultSet rs, int rowNum) throws SQLException {

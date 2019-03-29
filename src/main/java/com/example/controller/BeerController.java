@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.DAO.BeerBreweryDAO;
 import com.example.DAO.BeerCountryDAO;
 import com.example.DAO.BeerDAO;
+import com.example.DAO.BeerSnackDAO;
 import com.example.DAO.BeerStyleDAO;
 import com.example.DAO.BreweryDAO;
 import com.example.DAO.CountryDAO;
@@ -34,6 +35,7 @@ public class BeerController {
     private static final String LIST = "/beer/list";
     private static final String PUT = "/beer/put";
     private static final String ADD = "/beer/add";
+    private static final String DELETE = "/beer/delete";
     private static final String FILTER = "/beer/filter";
 
     @Autowired
@@ -50,11 +52,13 @@ public class BeerController {
     private BeerStyleDAO beerStyleDAO;
     @Autowired
     private BeerCountryDAO beerCountryDAO;
+    @Autowired
+    private BeerSnackDAO beerSnackDAO;
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String start(Model model) {
-        List<Beer> beers = beerDAO.getAllBeer();
+        List<Beer> beers = beerDAO.getAll();
         model.addAttribute("beers", beers);
 
         return "list_page";
@@ -73,33 +77,33 @@ public class BeerController {
             @RequestParam(value = "star", required = false) String star) {
 
         if (name != null) {
-            List<Beer> beers = beerDAO.getBeerByName(name);
+            List<Beer> beers = beerDAO.getByName(name);
             model.addAttribute("beers", beers);
         } else if (style != null) {
-            List<Beer> beers = beerDAO.getBeerByStyle(Integer.valueOf(style));
+            List<Beer> beers = beerDAO.getByStyle(Integer.valueOf(style));
             model.addAttribute("beers", beers);
         } else if (country != null) {
             List<Beer> beers =
-                    beerDAO.getBeerByCountry(Integer.valueOf(country));
+                    beerDAO.getByCountry(Integer.valueOf(country));
             model.addAttribute("beers", beers);
         } else if (brewery != null) {
             List<Beer> beers =
-                    beerDAO.getBeerByBrewery(Integer.valueOf(brewery));
+                    beerDAO.getByBrewery(Integer.valueOf(brewery));
             model.addAttribute("beers", beers);
         } else if (count != null) {
-            List<Beer> beers = beerDAO.getBeerByCount(Integer.valueOf(count));
+            List<Beer> beers = beerDAO.getByCount(Integer.valueOf(count));
             model.addAttribute("beers", beers);
         } else if (rate != null) {
-            List<Beer> beers = beerDAO.getBeerByRate(Integer.valueOf(rate));
+            List<Beer> beers = beerDAO.getByRate(Integer.valueOf(rate));
             model.addAttribute("beers", beers);
         } else if (craft != null) {
-            List<Beer> beers = beerDAO.getBeerByCraft(Boolean.valueOf(craft));
+            List<Beer> beers = beerDAO.getByCraft(Boolean.valueOf(craft));
             model.addAttribute("beers", beers);
         } else if (star != null) {
-            List<Beer> beers = beerDAO.getBeerByStar(Boolean.valueOf(star));
+            List<Beer> beers = beerDAO.getByStar(Boolean.valueOf(star));
             model.addAttribute("beers", beers);
         } else {
-            List<Beer> beers = beerDAO.getAllBeer();
+            List<Beer> beers = beerDAO.getAll();
             model.addAttribute("beers", beers);
         }
 
@@ -116,27 +120,28 @@ public class BeerController {
 
         List<Long> shouldBeMarkedStyles =
                 beerStyleDAO.getIdStyleByIdBeer(beer.getId());
-        List<BeerInfo> allStyle = styleDAO.getAllStyleLikeBeerInfo();
+        List<BeerInfo> allStyle = styleDAO.getAllLikeBeerInfo();
         Map<BeerInfo, Boolean> markedStyles =
                 setMarkFlags(allStyle, shouldBeMarkedStyles);
         model.addAttribute("markedStyles", markedStyles);
 
         List<Long> shouldBeMarkedCounties =
                 beerCountryDAO.getIdCountryByIdBeer(beer.getId());
-        List<BeerInfo> allCountries = countryDAO.getAllCountryLikeBeerInfo();
+        List<BeerInfo> allCountries = countryDAO.getAllLikeBeerInfo();
         Map<BeerInfo, Boolean> markedCountries =
                 setMarkFlags(allCountries, shouldBeMarkedCounties);
         model.addAttribute("markedCountries", markedCountries);
 
         List<Long> shouldBeMarkedBreweries =
                 beerBreweryDAO.getIdBreweryByIdBeer(beer.getId());
-        List<BeerInfo> allBreweries = breweryDAO.getAllBreweryLikeBeerInfo();
+        List<BeerInfo> allBreweries = breweryDAO.getAllLikeBeerInfo();
         Map<BeerInfo, Boolean> markedBreweries =
                 setMarkFlags(allBreweries, shouldBeMarkedBreweries);
         model.addAttribute("markedBreweries", markedBreweries);
 
         model.addAttribute("action", "Put");
-        model.addAttribute("ref", PUT);
+        model.addAttribute("ref_put", PUT);
+        model.addAttribute("ref_delete", DELETE);
 
         return "beer_page";
     }
@@ -147,17 +152,17 @@ public class BeerController {
         BeerForm beerForm = new BeerForm(50, 1);
         model.addAttribute("beerForm", beerForm);
 
-        List<BeerInfo> allStyle = styleDAO.getAllStyleLikeBeerInfo();
+        List<BeerInfo> allStyle = styleDAO.getAllLikeBeerInfo();
         Map<BeerInfo, Boolean> markedStyles =
                 setMarkFlags(allStyle, Collections.emptyList());
         model.addAttribute("markedStyles", markedStyles);
 
-        List<BeerInfo> allCountries = countryDAO.getAllCountryLikeBeerInfo();
+        List<BeerInfo> allCountries = countryDAO.getAllLikeBeerInfo();
         Map<BeerInfo, Boolean> markedCountries =
                 setMarkFlags(allCountries, Collections.emptyList());
         model.addAttribute("markedCountries", markedCountries);
 
-        List<BeerInfo> allBreweries = breweryDAO.getAllBreweryLikeBeerInfo();
+        List<BeerInfo> allBreweries = breweryDAO.getAllLikeBeerInfo();
         Map<BeerInfo, Boolean> markedBreweries =
                 setMarkFlags(allBreweries, new ArrayList<Long>());
         model.addAttribute("markedBreweries", markedBreweries);
@@ -187,7 +192,7 @@ public class BeerController {
 
     @RequestMapping(value = PUT, method = RequestMethod.POST)
     public String putPost(Model model, BeerForm beerForm) {
-        beerDAO.setBeer(beerForm);
+        beerDAO.put(beerForm);
 
         return "redirect:" + LIST;
     }
@@ -195,7 +200,15 @@ public class BeerController {
 
     @RequestMapping(value = ADD, method = RequestMethod.POST)
     public String addPost(Model model, BeerForm beerForm) {
-        beerDAO.addBeer(beerForm);
+        beerDAO.add(beerForm);
+
+        return "redirect:" + LIST;
+    }
+    
+    
+    @RequestMapping(value = DELETE, method = RequestMethod.POST)
+    public String delete(Model model, BeerForm beerForm) {
+        beerDAO.delete(beerForm);
 
         return "redirect:" + LIST;
     }
@@ -203,13 +216,13 @@ public class BeerController {
 
     @RequestMapping(value = FILTER, method = RequestMethod.GET)
     public String filterGet(Model model) {
-        List<Style> styles = styleDAO.getAllStyle();
+        List<Style> styles = styleDAO.getAll();
         model.addAttribute("styles", styles);
 
-        List<Country> countries = countryDAO.getAllCountry();
+        List<Country> countries = countryDAO.getAll();
         model.addAttribute("countries", countries);
 
-        List<Brewery> breweries = breweryDAO.getAllBrewery();
+        List<Brewery> breweries = breweryDAO.getAll();
         model.addAttribute("breweries", breweries);
 
         return "beer_filter_page";

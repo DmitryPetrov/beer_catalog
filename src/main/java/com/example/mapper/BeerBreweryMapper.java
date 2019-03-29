@@ -19,8 +19,9 @@ public class BeerBreweryMapper implements RowMapper<BeerBrewery> {
     public static final String INSERT =
             "INSERT INTO beer_brewery VALUES (?, ?) ON CONFLICT DO NOTHING";
     public static final String DELETE_BY_ID_BEER =
-            "DELETE FROM beer_brewery where id_beer = ? ";
-
+            "DELETE FROM beer_brewery where id_beer = ?";
+    public static final String DELETE_BY_ID_BREWERY =
+            "DELETE FROM beer_brewery where id_brewery = ?";
 
     @Override
     public BeerBrewery mapRow(ResultSet rs, int rowNum) throws SQLException {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.DAO.SnackDAO;
 import com.example.model.Snack;
+import com.example.model.Style;
 
 
 @Controller
@@ -18,13 +19,14 @@ public class SnackController {
     private static final String LIST = "/snack/list";
     private static final String PUT = "/snack/put";
     private static final String ADD = "/snack/add";
+    private static final String DELETE = "/snack/delete";
     
     @Autowired
     private SnackDAO snackDAO;
 
     @RequestMapping(value = LIST, method = RequestMethod.GET)
     public String list(Model model) {
-        List<Snack> list = snackDAO.getAllSnack();
+        List<Snack> list = snackDAO.getAll();
         model.addAttribute("list", list);
 
         Snack item = new Snack();
@@ -33,21 +35,30 @@ public class SnackController {
         model.addAttribute("name", "Snack");
         model.addAttribute("add", ADD);
         model.addAttribute("put", PUT);
+        model.addAttribute("delete", DELETE);
 
         return "item_page";
     }
 
     @RequestMapping(value = PUT, method = RequestMethod.POST)
     public String put(Model model, Snack snack) {
-        snackDAO.setSnack(snack);
+        snackDAO.put(snack);
 
         return "redirect:" + LIST;
     }
 
     @RequestMapping(value = ADD, method = RequestMethod.POST)
     public String add(Model model, Snack snack) {
-        snackDAO.addSnack(snack);
+        snackDAO.add(snack);
 
         return "redirect:" + LIST;
     }
+    
+    @RequestMapping(value = DELETE, method = RequestMethod.POST)
+    public String delete(Model model, Snack snack) {
+        snackDAO.delete(snack);
+
+        return "redirect:" + LIST;
+    }
+    
 }

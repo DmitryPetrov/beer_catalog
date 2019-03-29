@@ -21,11 +21,14 @@ import com.example.model.Country;
 public class CountryDAO extends JdbcDaoSupport {
 
     @Autowired
+    private BeerCountryDAO beerCountryDAO;
+    
+    @Autowired
     public CountryDAO(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
 
-    public List<Country> getAllCountry() {
+    public List<Country> getAll() {
         String sql = CountryMapper.SELECT_ALL;
         Object[] params = new Object[] {};
         CountryMapper mapper = new CountryMapper();
@@ -33,8 +36,8 @@ public class CountryDAO extends JdbcDaoSupport {
         return list;
     }
 
-    public List<BeerInfo> getAllCountryLikeBeerInfo() {
-        List<Country> list = getAllCountry();
+    public List<BeerInfo> getAllLikeBeerInfo() {
+        List<Country> list = getAll();
         List<BeerInfo> beerInfo = new ArrayList<>();
         for (Country country : list) {
             beerInfo.add(country);
@@ -42,7 +45,7 @@ public class CountryDAO extends JdbcDaoSupport {
         return beerInfo;
     }
 
-    public Country getCountry(long id) {
+    public Country get(long id) {
         String sql = CountryMapper.SELECT_BY_ID;
         Object[] params = new Object[] { id };
         CountryMapper mapper = new CountryMapper();
@@ -56,7 +59,7 @@ public class CountryDAO extends JdbcDaoSupport {
         }
     }
 
-    public Country getCountry(String name) {
+    public Country get(String name) {
         String sql = CountryMapper.SELECT_BY_NAME;
         Object[] params = new Object[] { name };
         CountryMapper mapper = new CountryMapper();
@@ -70,26 +73,37 @@ public class CountryDAO extends JdbcDaoSupport {
         }
     }
 
-    public int addCountry(Country country) {
-        if (getCountry(country.getName()) != null) {
+    public int add(Country country) {
+        if (get(country.getName()) != null) {
             return 0;
         }
 
-        Object[] params = new Object[] { country.getName() };
-
         String sql = CountryMapper.INSERT;
+        Object[] params = new Object[] { country.getName() };
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }
 
-    public int setCountry(Country country) {
-        if (getCountry(country.getName()) == null) {
+    public int put(Country country) {
+        if (get(country.getName()) == null) {
             return 0;
         }
-
-        Object[] params = new Object[] { country.getName(), country.getId() };
-
+        
         String sql = CountryMapper.UPDATE_NAME_BY_ID;
+        Object[] params = new Object[] { country.getName(), country.getId() };
+        int countUpdated = this.getJdbcTemplate().update(sql, params);
+        return countUpdated;
+    }
+
+    public int delete(Country country) {
+        if (get(country.getName()) == null) {
+            return 0;
+        }
+        
+        beerCountryDAO.deleteByIdCountry(country.getId());
+        
+        String sql = CountryMapper.DELETE;
+        Object[] params = new Object[] { country.getId() };
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }

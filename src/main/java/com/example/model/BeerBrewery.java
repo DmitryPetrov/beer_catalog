@@ -3,11 +3,11 @@ package com.example.model;
 public class BeerBrewery {
 
     private long idBeer;
-    private long idBrewary;
+    private long idBrewery;
 
-    public BeerBrewery(long idBeer, long idBrewary) {
+    public BeerBrewery(long idBeer, long idBrewery) {
         this.idBeer = idBeer;
-        this.idBrewary = idBrewary;
+        this.idBrewery = idBrewery;
     }
 
     public long getIdBeer() {
@@ -18,11 +18,11 @@ public class BeerBrewery {
         this.idBeer = idBeer;
     }
 
-    public long getIdBrewary() {
-        return idBrewary;
+    public long getIdBrewery() {
+        return idBrewery;
     }
 
-    public void setIdBrewary(long idBrewary) {
-        this.idBrewary = idBrewary;
+    public void setIdBrewery(long idBrewery) {
+        this.idBrewery = idBrewery;
     }
 }

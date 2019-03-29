@@ -29,17 +29,17 @@ import com.example.model.Style;
 @Repository
 @Transactional
 public class BeerDAO extends JdbcDaoSupport {
-
-    @Autowired
-    private BeerBreweryDAO beerBreweryDAO;
-
-    @Autowired
-    private BeerCountryDAO beerCountryDAO;
-
+    
     @Autowired
     private BeerStyleDAO beerStyleDAO;
+    @Autowired
+    private BeerCountryDAO beerCountryDAO;
+    @Autowired
+    private BeerBreweryDAO beerBreweryDAO;
+    @Autowired
+    private BeerSnackDAO beerSnackDAO;
 
-
+    
     @Autowired
     public BeerDAO(DataSource dataSource) {
         this.setDataSource(dataSource);
@@ -61,7 +61,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getAllBeer() {
+    public List<Beer> getAll() {
         String sql = BeerMapper.SELECT_ALL;
         Object[] params = new Object[] {};
         BeerMapper mapper = new BeerMapper();
@@ -70,7 +70,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByName(String name) {
+    public List<Beer> getByName(String name) {
         String sql = BeerMapper.SELECT_BY_NAME;
         Object[] params = new Object[] { name };
         BeerMapper mapper = new BeerMapper();
@@ -79,7 +79,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByRate(int rate) {
+    public List<Beer> getByRate(int rate) {
         String sql = BeerMapper.SELECT_BY_RATE;
         Object[] params = new Object[] { rate };
         BeerMapper mapper = new BeerMapper();
@@ -88,7 +88,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByCount(int count) {
+    public List<Beer> getByCount(int count) {
         String sql = BeerMapper.SELECT_BY_COUNT;
         Object[] params = new Object[] { count };
         BeerMapper mapper = new BeerMapper();
@@ -97,7 +97,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByStyle(int idStyle) {
+    public List<Beer> getByStyle(int idStyle) {
         String sql = BeerMapper.SELECT_BY_STYLE;
         Object[] params = new Object[] { idStyle };
         BeerMapper mapper = new BeerMapper();
@@ -106,7 +106,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByBrewery(int idBrewery) {
+    public List<Beer> getByBrewery(int idBrewery) {
         String sql = BeerMapper.SELECT_BY_BREWERY;
         Object[] params = new Object[] { idBrewery };
         BeerMapper mapper = new BeerMapper();
@@ -115,7 +115,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByCountry(int idCountry) {
+    public List<Beer> getByCountry(int idCountry) {
         String sql = BeerMapper.SELECT_BY_COUNTY;
         Object[] params = new Object[] { idCountry };
         BeerMapper mapper = new BeerMapper();
@@ -124,7 +124,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByStar(boolean star) {
+    public List<Beer> getByStar(boolean star) {
         String sql = BeerMapper.SELECT_BY_STAR;
         Object[] params = new Object[] { star };
         BeerMapper mapper = new BeerMapper();
@@ -133,7 +133,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByCraft(boolean craft) {
+    public List<Beer> getByCraft(boolean craft) {
         String sql = BeerMapper.SELECT_BY_CRAFT;
         Object[] params = new Object[] { craft };
         BeerMapper mapper = new BeerMapper();
@@ -142,7 +142,7 @@ public class BeerDAO extends JdbcDaoSupport {
     }
 
 
-    public List<Beer> getBeerByParams(BeerFilterForm beerFilter) {
+    public List<Beer> getByParams(BeerFilterForm beerFilter) {
         String sql = BeerMapper.SELECT_ALL;
 
         sql += "WHERE ";
@@ -189,7 +189,7 @@ public class BeerDAO extends JdbcDaoSupport {
 
 
     // @Transaction
-    public void addBeer(BeerForm beerForm) {
+    public void add(BeerForm beerForm) {
         Object[] params = new Object[7];
 
         params[0] = beerForm.getRate();
@@ -248,7 +248,7 @@ public class BeerDAO extends JdbcDaoSupport {
 
 
     // ??????
-    public int setBeer(BeerForm beerForm) {
+    public int put(BeerForm beerForm) {
         Object[] params = new Object[8];
 
         params[0] = beerForm.getRate();
@@ -262,37 +262,47 @@ public class BeerDAO extends JdbcDaoSupport {
 
         String sql = BeerMapper.UPDATE;
         
-        for(Object param: params) {  
-            System.out.println(param);
-        }
         int countUpdated = this.getJdbcTemplate().update(sql, params);
-
-        long beerId = beerForm.getId();
 
         List<Brewery> breweryList = beerForm.getBreweries();
         if (breweryList != null) {
             for (Brewery brewery : breweryList) {
-                beerBreweryDAO.add(beerId, brewery.getId());
+                beerBreweryDAO.add(beerForm.getId(), brewery.getId());
             }
         }
 
         List<Style> styleList = beerForm.getStyles();
         if (styleList != null) {
             for (Style style : styleList) {
-                beerStyleDAO.add(beerId, style.getId());
+                beerStyleDAO.add(beerForm.getId(), style.getId());
             }
         }
 
         List<Country> countryList = beerForm.getCountries();
         if (countryList != null) {
             for (Country country : countryList) {
-                beerCountryDAO.add(beerId, country.getId());
+                beerCountryDAO.add(beerForm.getId(), country.getId());
             }
         }
-        System.out.println(breweryList);
-        System.out.println(styleList);
-        System.out.println(countryList);
+
         return countUpdated;
+    }
+
+
+    public int delete(BeerForm beerForm) {
+        Object[] params = new Object[] { beerForm.getId() };
+
+        String sql = BeerMapper.DELETE;
+
+        int countUpdated = this.getJdbcTemplate().update(sql, params);
+
+        beerBreweryDAO.deleteByIdBeer(beerForm.getId());
+        beerStyleDAO.deleteByIdBeer(beerForm.getId());
+        beerCountryDAO.deleteByIdBeer(beerForm.getId());
+        beerSnackDAO.deleteByIdBeer(beerForm.getId());
+
+        return countUpdated;
+        
     }
 
 }

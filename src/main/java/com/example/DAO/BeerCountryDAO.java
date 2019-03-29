@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mapper.BeerCountryMapper;
 import com.example.model.BeerCountry;
+import com.example.model.BeerStyle;
 
 @Repository
 @Transactional
@@ -23,36 +24,35 @@ public class BeerCountryDAO extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-
-    public List<BeerCountry> getAllBeerCountryTable() {
+    public List<BeerCountry> getAll() {
         String sql = BeerCountryMapper.SELECT_ALL;
         Object[] params = new Object[] {};
         BeerCountryMapper mapper = new BeerCountryMapper();
-        List<BeerCountry> list =
-                this.getJdbcTemplate().query(sql, params, mapper);
+        List<BeerCountry> list = this.getJdbcTemplate().query(sql, params, mapper);
         return list;
     }
 
-
-    public List<BeerCountry> getIdBeerByIdCountry(long idCountry) {
+    public List<Long> getIdBeerByIdCountry(long id) {
         String sql = BeerCountryMapper.SELECT_BY_ID_COUNTRY;
-        Object[] params = new Object[] { idCountry };
+        Object[] params = new Object[] { id };
         BeerCountryMapper mapper = new BeerCountryMapper();
-        List<BeerCountry> list =
-                this.getJdbcTemplate().query(sql, params, mapper);
-        return list;
+        List<BeerCountry> list = this.getJdbcTemplate().query(sql, params, mapper);
+
+        List<Long> beerId = new ArrayList<>();
+        for (BeerCountry beerCountry : list) {
+            beerId.add(beerCountry.getIdBeer());
+        }
+
+        return beerId;
     }
 
-
-    public List<Long> getIdCountryByIdBeer(long idBeer) {
+    public List<Long> getIdCountryByIdBeer(long id) {
         String sql = BeerCountryMapper.SELECT_BY_ID_BEER;
-        Object[] params = new Object[] { idBeer };
+        Object[] params = new Object[] { id };
         BeerCountryMapper mapper = new BeerCountryMapper();
-        List<BeerCountry> list =
-                this.getJdbcTemplate().query(sql, params, mapper);
+        List<BeerCountry> list = this.getJdbcTemplate().query(sql, params, mapper);
 
         List<Long> countiesId = new ArrayList<>();
-
         for (BeerCountry beerBrewery : list) {
             countiesId.add(beerBrewery.getIdCountry());
         }
@@ -60,24 +60,23 @@ public class BeerCountryDAO extends JdbcDaoSupport {
         return countiesId;
     }
 
-
     public int add(long idBeer, long idCountry) {
-        Object[] params = new Object[2];
-        params[0] = idBeer;
-        params[1] = idCountry;
-
+        Object[] params = new Object[] { idBeer, idCountry };
         String sql = BeerCountryMapper.INSERT;
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }
 
-
-    public int delete(long idBeer, long idCountry) {
-        Object[] params = new Object[2];
-        params[0] = idBeer;
-        params[1] = idCountry;
-
+    public int deleteByIdBeer(long id) {
+        Object[] params = new Object[] { id };
         String sql = BeerCountryMapper.DELETE_BY_ID_BEER;
+        int countUpdated = this.getJdbcTemplate().update(sql, params);       
+        return countUpdated;
+    }
+
+    public int deleteByIdCountry(long id) {
+        Object[] params = new Object[] { id };
+        String sql = BeerCountryMapper.DELETE_BY_ID_COUNTRY;
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }

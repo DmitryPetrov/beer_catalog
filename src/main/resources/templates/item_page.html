@@ -2,28 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title th:utext="'All ' + ${name}">..</title>
+<link th:href="@{../css/style.css}" rel="stylesheet">
 </head>
 
 <body>
   <th:block th:include="/_menu"></th:block>
 
-  <fieldset style="width: 500px;">
+  <fieldset>
     <legend th:utext="'All ' + ${name}">..</legend>
-    <table border="1">
+    <table>
       <tr>
         <th>Id</th>
         <th>Name</th>
       </tr>
       <tr th:each="item : ${list}">
-		  <td th:utext="${item.id}">..</td>
-		  <td th:utext="${item.name}">..</td>
+        <td th:utext="${item.id}">..</td>
+        <td th:utext="${item.name}">..</td>
       </tr>
     </table>
   </fieldset>
 
   <br>
   <form th:action="@{${add}}" th:object="${item}" method="POST">
-    <fieldset style="width: 500px;">
+    <fieldset>
       <legend th:utext="'Add ' + ${name}">..</legend>
       <p>
         Name <input type="text" th:field="*{name}" /> <input type="submit" value="Add" />
@@ -33,7 +34,7 @@
 
   <br>
   <form th:action="@{${put}}" th:object="${item}" method="POST">
-    <fieldset style="width: 500px;">
+    <fieldset>
       <legend th:utext="'Change ' + ${name}">..</legend>
       <p>
         Change name from <select th:field="*{id}">
@@ -45,5 +46,17 @@
       </p>
     </fieldset>
   </form>
+
+  <br>
+  <form th:action="@{${delete}}" th:object="${item}" method="POST">
+    <fieldset>
+      <legend th:utext="'! DELETE ' + ${name} + ' !'">..</legend>
+      <label>Delete style</label>
+      <select th:field="*{id}">
+        <option th:each="item : ${list}" th:value="${item.id}" th:utext="${item.name} + ' (#' + ${item.id} + ')'">..</option>
+      </select> <input type="submit" value="Delete" />
+    </fieldset>
+  </form>
+
 </body>
 </html>

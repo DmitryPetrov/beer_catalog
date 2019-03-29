@@ -1,0 +1,32 @@
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+html, body {
+	height: 100vh;
+}
+
+table {
+	border: 1px double black;
+	border-collapse: collapse;
+}
+
+th {
+	text-align: left; /* Выравнивание по левому краю */
+	background: #c7ded8; /* Цвет фона ячеек */
+	padding: 5px; /* Поля вокруг содержимого ячеек */
+	border: 1px solid black; /* Граница вокруг ячеек */
+}
+
+th.submit {
+	text-align: center;
+}
+
+td {
+	padding: 5px; /* Поля вокруг содержимого ячеек */
+	border: 1px solid black; /* Граница вокруг ячеек */
+}
+
+fieldset {
+	width: 1000px;
+}

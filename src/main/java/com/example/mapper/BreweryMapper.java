@@ -15,9 +15,11 @@ public class BreweryMapper implements RowMapper<Brewery> {
             "SELECT * FROM brewery WHERE id = ? ";
     public static final String SELECT_BY_NAME =
             "SELECT * FROM brewery WHERE name = ? ";
-    public static final String INSERT = "INSERT INTO brewery(name) VALUES (?) ";
+    public static final String INSERT =
+            "INSERT INTO brewery(name) VALUES (?) ON CONFLICT DO NOTHING";
     public static final String UPDATE_NAME_BY_ID =
             "UPDATE brewery SET name = ? WHERE id = ? ";
+    public static final String DELETE = "DELETE FROM brewery WHERE id = ? ";
 
 
     @Override

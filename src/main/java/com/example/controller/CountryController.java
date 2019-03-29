@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.DAO.CountryDAO;
 import com.example.model.Country;
+import com.example.model.Style;
 
 @Controller
 public class CountryController {
@@ -18,6 +19,7 @@ public class CountryController {
     private static final String LIST = "/country/list";
     private static final String PUT = "/country/put";
     private static final String ADD = "/country/add";
+    private static final String DELETE = "/country/delete";
     
     @Autowired
     private CountryDAO countryDAO;
@@ -25,7 +27,7 @@ public class CountryController {
 
     @RequestMapping(value = LIST, method = RequestMethod.GET)
     public String list(Model model) {
-        List<Country> list = countryDAO.getAllCountry();
+        List<Country> list = countryDAO.getAll();
         model.addAttribute("list", list);
 
         Country item = new Country();
@@ -34,6 +36,7 @@ public class CountryController {
         model.addAttribute("name", "Country");
         model.addAttribute("add", ADD);
         model.addAttribute("put", PUT);
+        model.addAttribute("delete", DELETE);
 
         return "item_page";
     }
@@ -41,7 +44,7 @@ public class CountryController {
 
     @RequestMapping(value = PUT, method = RequestMethod.POST)
     public String put(Model model, Country country) {
-        countryDAO.setCountry(country);
+        countryDAO.put(country);
 
         return "redirect:" + LIST;
     }
@@ -49,8 +52,16 @@ public class CountryController {
 
     @RequestMapping(value = ADD, method = RequestMethod.POST)
     public String add(Model model, Country country) {
-        countryDAO.addCountry(country);
+        countryDAO.add(country);
+
+        return "redirect:" + LIST;
+    }    
+    
+    @RequestMapping(value = DELETE, method = RequestMethod.POST)
+    public String delete(Model model, Country country) {
+        countryDAO.delete(country);
 
         return "redirect:" + LIST;
     }
+    
 }

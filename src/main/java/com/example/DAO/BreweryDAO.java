@@ -21,11 +21,14 @@ import com.example.model.Brewery;
 public class BreweryDAO extends JdbcDaoSupport {
 
     @Autowired
+    private BeerBreweryDAO beerBreweryDAO;
+    
+    @Autowired
     public BreweryDAO(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
 
-    public List<Brewery> getAllBrewery() {
+    public List<Brewery> getAll() {
         String sql = BreweryMapper.SELECT_ALL;
         Object[] params = new Object[] {};
         BreweryMapper mapper = new BreweryMapper();
@@ -33,8 +36,8 @@ public class BreweryDAO extends JdbcDaoSupport {
         return list;
     }
 
-    public List<BeerInfo> getAllBreweryLikeBeerInfo() {
-        List<Brewery> list = getAllBrewery();
+    public List<BeerInfo> getAllLikeBeerInfo() {
+        List<Brewery> list = getAll();
         List<BeerInfo> beerInfo = new ArrayList<>();
         for (Brewery brewery : list) {
             beerInfo.add(brewery);
@@ -42,7 +45,7 @@ public class BreweryDAO extends JdbcDaoSupport {
         return beerInfo;
     }
 
-    public Brewery getBrewery(long id) {
+    public Brewery get(long id) {
         String sql = BreweryMapper.SELECT_BY_ID;
         Object[] params = new Object[] { id };
         BreweryMapper mapper = new BreweryMapper();
@@ -56,7 +59,7 @@ public class BreweryDAO extends JdbcDaoSupport {
         }
     }
 
-    public Brewery getBrewery(String name) {
+    public Brewery get(String name) {
         String sql = BreweryMapper.SELECT_BY_NAME;
         Object[] params = new Object[] { name };
         BreweryMapper mapper = new BreweryMapper();
@@ -70,24 +73,37 @@ public class BreweryDAO extends JdbcDaoSupport {
         }
     }
 
-    public int addBrewery(Brewery brewery) {
-        if (getBrewery(brewery.getId()) != null) {
+    public int add(Brewery brewery) {
+        if (get(brewery.getId()) != null) {
             return 0;
         }
-        Object[] params = new Object[] { brewery.getName() };
-
+        
         String sql = BreweryMapper.INSERT;
+        Object[] params = new Object[] { brewery.getName() };
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }
 
-    public int setBrewery(Brewery brewery) {
-        if (getBrewery(brewery.getId()) == null) {
+    public int put(Brewery brewery) {
+        if (get(brewery.getId()) == null) {
             return 0;
         }
-        Object[] params = new Object[] { brewery.getName(), brewery.getId() };
-
+        
         String sql = BreweryMapper.UPDATE_NAME_BY_ID;
+        Object[] params = new Object[] { brewery.getName(), brewery.getId() };
+        int countUpdated = this.getJdbcTemplate().update(sql, params);
+        return countUpdated;
+    }
+
+    public int delete(Brewery brewery) {
+        if (get(brewery.getId()) == null) {
+            return 0;
+        }
+        
+        beerBreweryDAO.deleteByIdBrewery(brewery.getId());
+        
+        String sql = BreweryMapper.DELETE;
+        Object[] params = new Object[] { brewery.getId() };
         int countUpdated = this.getJdbcTemplate().update(sql, params);
         return countUpdated;
     }

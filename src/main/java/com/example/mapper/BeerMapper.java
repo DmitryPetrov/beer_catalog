@@ -18,6 +18,8 @@ public class BeerMapper implements RowMapper<Beer> {
 
     public static final String UPDATE = "UPDATE beer SET (rate, count, star, craft, name, description, photo) = (?, ?, ?, ?, ?, ?, ?) WHERE id = ?";
 
+    public static final String DELETE = "DELETE FROM beer WHERE id = ?";
+    
     public static final String SELECT_ALL = "SELECT * FROM beer ";
     public static final String SELECT_BY_ID = "SELECT * FROM beer WHERE id = ? ";
     public static final String SELECT_BY_RATE = "SELECT * FROM beer WHERE rate > ? ";
@@ -30,7 +32,7 @@ public class BeerMapper implements RowMapper<Beer> {
     public static final String SELECT_BY_STAR = "SELECT * FROM beer WHERE star = ? ";
     public static final String SELECT_BY_CRAFT = "SELECT * FROM beer WHERE craft = ? ";
 
-    public static final String SELECT_BY_NAME = "SELECT * FROM beer WHERE name ILIKE ('% ? %') ";
+    public static final String SELECT_BY_NAME = "SELECT * FROM beer WHERE name ILIKE '%'||:?||'%' ";
     
 
     @Override
