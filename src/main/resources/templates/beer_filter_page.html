@@ -19,6 +19,7 @@
 	<legend>Show by Style</legend>
 		<form th:action="@{/beer/list}" method="GET">
 			<select name="style">
+      <option value=""> -- </option>
 			<option th:each="style : ${styles}" th:value="${style.id}" th:utext="${style.name}">..</option></select>
 		<input type="submit" value="Show" /></form>
 	</fieldset>
@@ -27,6 +28,7 @@
 	<legend>Show by Country</legend>
 		<form th:action="@{/beer/list}" method="GET">
 			<select name="country">
+      <option value=""> -- </option>
 			<option th:each="country : ${countries}" th:value="${country.id}" th:utext="${country.name}">..</option></select>
 		<input type="submit" value="Show" /></form>
 	</fieldset>
@@ -35,6 +37,7 @@
 	<legend>Show by Brewery</legend>
 		<form th:action="@{/beer/list}" method="GET">
 			<select name="brewery">
+      <option value=""> -- </option>
 			<option th:each="brewery : ${breweries}" th:value="${brewery.id}" th:utext="${brewery.name}">..</option></select>
 		<input type="submit" value="Show" /></form>
 	</fieldset>

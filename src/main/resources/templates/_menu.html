@@ -26,5 +26,17 @@
    &nbsp; | &nbsp;
  
   <a th:href="@{/snack/list}">All Snack</a>
-    
+  
+   &nbsp; | &nbsp;  
+  
+  <a th:href="@{/admin}">Admin</a>    
+
+   &nbsp; | &nbsp;     
+     
+  <a th:href="@{/user/info}">User Info</a>
+  
+     &nbsp; | &nbsp;     
+     
+  <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
+
 </div>

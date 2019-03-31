@@ -37,7 +37,9 @@
     <fieldset>
       <legend th:utext="'Change ' + ${name}">..</legend>
       <p>
-        Change name from <select th:field="*{id}">
+          <label>Change name from</label>
+          <select th:field="*{id}">
+          <option value="0"> -- </option>
           <option th:each="item : ${list}" th:value="${item.id}" th:utext="${item.name} + ' (#' + ${item.id} + ')'">..</option>
         </select>
       </p>
@@ -48,15 +50,18 @@
   </form>
 
   <br>
+  <div th:if="${#authorization.expression('hasAuthority(''admin'')')}">
   <form th:action="@{${delete}}" th:object="${item}" method="POST">
     <fieldset>
       <legend th:utext="'! DELETE ' + ${name} + ' !'">..</legend>
       <label>Delete style</label>
       <select th:field="*{id}">
+        <option value="0"> -- </option>
         <option th:each="item : ${list}" th:value="${item.id}" th:utext="${item.name} + ' (#' + ${item.id} + ')'">..</option>
       </select> <input type="submit" value="Delete" />
     </fieldset>
   </form>
+  </div>
 
 </body>
 </html>
