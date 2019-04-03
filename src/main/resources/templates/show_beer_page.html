@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:utext="${action} + ' beer'"></title>
+<link th:href="@{../css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+  <th:block th:include="/_menu"></th:block>
+
+  <fieldset>
+    <legend th:utext="${action} + ' beer'"></legend>
+
+      <table>
+        <tr>
+          <th>Bottle count</th>
+          <th th:text="*{beerForm.count}"></th>
+          <th>Rate</th>
+          <th th:text="*{beerForm.rate}"></th>
+        </tr>
+
+        <tr>
+          <th>Name</th>
+          <th th:text="*{beerForm.name}" colspan="3" ></th>
+        </tr>
+
+        <tr>
+          <th>Description</th>
+          <th th:text="*{beerForm.description}" colspan="3"></textarea></th>
+        </tr>
+
+        <tr>
+          <th>Favorite</th>
+          <th th:text="*{beerForm.star}? 'yes': 'no'"></th>
+          <th>Craft</th>
+          <th th:text="*{beerForm.craft}? 'yes': 'no'"></th>
+        </tr>
+        
+        <tr>
+          <th>Style</th>
+    			<th colspan="3"><ul>
+    			  <li th:each="style : ${styles}">
+    			  <label th:text="${style.name}"></label></li>
+    			</ul></th>        
+        </tr>
+
+        <tr>
+          <th>Country</th>
+    			<th colspan="3"><ul>
+    			  <li th:each="country : ${countries}">
+    			  <label th:text="${country.name}"></label></li>
+    			</ul></th>   
+        </tr>
+        
+        <tr>
+          <th>Brewery</th>
+    			<th colspan="3"><ul>
+    			  <li th:each="brewery : ${breweries}">
+    			  <label th:text="${brewery.name}"></label></li>
+    			</ul></th>   
+        </tr>
+        
+        <tr>
+          <th>Snack</th>
+    			<th colspan="3"><ul>
+    			  <li th:each="snack : ${snacks}">
+    			  <label th:text="${snack.name}"></label></li>
+    			</ul></th>   
+        </tr>
+
+        <tr>
+          <th>Photo</th>
+          <th colspan="3" th:text="*{beerForm.photo}"></textarea></th>
+        </tr>
+
+      </table>
+  </fieldset>
+
+</body>
+</html>

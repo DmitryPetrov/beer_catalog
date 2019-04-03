@@ -1,0 +1,14 @@
+<div xmlns:th="http://www.thymeleaf.org">
+ 
+  <div th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+  <form th:action="@{${add}}" th:object="${item}" method="POST">
+    <fieldset>
+      <legend th:utext="'Add ' + ${name}">..</legend>
+      <p>
+        Name <input type="text" th:field="*{name}" /> <input type="submit" value="Add" />
+      </p>
+    </fieldset>
+  </form>
+  </div>
+
+</div>

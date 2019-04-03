@@ -72,6 +72,14 @@ public class BreweryDAO extends JdbcDaoSupport {
             return null;
         }
     }
+    
+    public List<Brewery> getByBeerId(long id) {
+        String sql = BreweryMapper.SELECT_BY_BEER_ID;
+        Object[] params = new Object[] { id };
+        BreweryMapper mapper = new BreweryMapper();
+        List<Brewery> list = this.getJdbcTemplate().query(sql, params, mapper);
+        return list;
+    }
 
     public int add(Brewery brewery) {
         if (get(brewery.getId()) != null) {

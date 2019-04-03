@@ -1,13 +1,19 @@
 
 package com.example.product.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +27,14 @@ import com.example.product.dao.BeerSnackDAO;
 import com.example.product.dao.BeerStyleDAO;
 import com.example.product.dao.BreweryDAO;
 import com.example.product.dao.CountryDAO;
+import com.example.product.dao.SnackDAO;
 import com.example.product.dao.StyleDAO;
 import com.example.product.form.BeerForm;
 import com.example.product.model.Beer;
 import com.example.product.model.BeerInfo;
 import com.example.product.model.Brewery;
 import com.example.product.model.Country;
+import com.example.product.model.Snack;
 import com.example.product.model.Style;
 
 @Controller
@@ -37,6 +45,7 @@ public class BeerController {
     private static final String ADD = "/beer/add";
     private static final String DELETE = "/beer/delete";
     private static final String FILTER = "/beer/filter";
+    private static final String SHOW = "/beer/show";
 
     @Autowired
     private BeerDAO beerDAO;
@@ -46,6 +55,8 @@ public class BeerController {
     private CountryDAO countryDAO;
     @Autowired
     private BreweryDAO breweryDAO;
+    @Autowired
+    private SnackDAO snackDAO;
     @Autowired
     private BeerBreweryDAO beerBreweryDAO;
     @Autowired
@@ -57,16 +68,41 @@ public class BeerController {
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String start(Model model) {
+    public String start(Model model, Principal principal) {
         List<Beer> beers = beerDAO.getAll();
         model.addAttribute("beers", beers);
+
+        if (principal == null) {
+            model.addAttribute("button_name", "Show");
+            model.addAttribute("button_action", SHOW);
+            return "list_page";
+        }
+
+        User user = (User) ((Authentication) principal).getPrincipal();
+        Collection<GrantedAuthority> authorities = user.getAuthorities();
+
+        if (authorities != null && !authorities.isEmpty()) {
+            for (GrantedAuthority a : authorities) {
+                if (a.getAuthority().equalsIgnoreCase("admin")) {
+                    model.addAttribute("button_name", "Change");
+                    model.addAttribute("button_action", PUT);
+                    break;
+                }
+
+                if (a.getAuthority().equalsIgnoreCase("user")) {
+                    model.addAttribute("button_name", "Add to me");
+                    model.addAttribute("button_action", "/user/beer/add");
+                    break;
+                }
+            }
+        }
 
         return "list_page";
     }
 
 
     @RequestMapping(value = LIST, method = RequestMethod.GET)
-    public String list(Model model,
+    public String list(Model model, Principal principal,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "style", required = false) String style,
             @RequestParam(value = "country", required = false) String country,
@@ -76,6 +112,30 @@ public class BeerController {
             @RequestParam(value = "craft", required = false) String craft,
             @RequestParam(value = "star", required = false) String star) {
 
+        if (principal == null) {
+            model.addAttribute("button_name", "Show");
+            model.addAttribute("button_action", SHOW);
+        } else {
+            User user = (User) ((Authentication) principal).getPrincipal();
+            Collection<GrantedAuthority> authorities = user.getAuthorities();
+
+            if (authorities != null && !authorities.isEmpty()) {
+                for (GrantedAuthority a : authorities) {
+                    if (a.getAuthority().equalsIgnoreCase("admin")) {
+                        model.addAttribute("button_name", "Change");
+                        model.addAttribute("button_action", PUT);
+                        break;
+                    }
+
+                    if (a.getAuthority().equalsIgnoreCase("user")) {
+                        model.addAttribute("button_name", "Add to me");
+                        model.addAttribute("button_action", "/user/beer/add");
+                        break;
+                    }
+                }
+            }
+        }
+
         if (name != null) {
             List<Beer> beers = beerDAO.getByName(name);
             model.addAttribute("beers", beers);
@@ -83,12 +143,10 @@ public class BeerController {
             List<Beer> beers = beerDAO.getByStyle(Integer.valueOf(style));
             model.addAttribute("beers", beers);
         } else if (country != null) {
-            List<Beer> beers =
-                    beerDAO.getByCountry(Integer.valueOf(country));
+            List<Beer> beers = beerDAO.getByCountry(Integer.valueOf(country));
             model.addAttribute("beers", beers);
         } else if (brewery != null) {
-            List<Beer> beers =
-                    beerDAO.getByBrewery(Integer.valueOf(brewery));
+            List<Beer> beers = beerDAO.getByBrewery(Integer.valueOf(brewery));
             model.addAttribute("beers", beers);
         } else if (count != null) {
             List<Beer> beers = beerDAO.getByCount(Integer.valueOf(count));
@@ -105,12 +163,14 @@ public class BeerController {
         } else {
             List<Beer> beers = beerDAO.getAll();
             model.addAttribute("beers", beers);
+
         }
 
         return "list_page";
     }
 
 
+    @Secured(value = { "ROLE_ADMIN" })
     @RequestMapping(value = PUT, method = RequestMethod.GET)
     public String putGet(Model model,
             @RequestParam(value = "id", required = true) String id) {
@@ -147,6 +207,7 @@ public class BeerController {
     }
 
 
+    @Secured(value = { "ROLE_ADMIN" })
     @RequestMapping(value = ADD, method = RequestMethod.GET)
     public String addGet(Model model) {
         BeerForm beerForm = new BeerForm(50, 1);
@@ -190,6 +251,7 @@ public class BeerController {
     }
 
 
+    @Secured(value = { "ROLE_ADMIN" })
     @RequestMapping(value = PUT, method = RequestMethod.POST)
     public String putPost(Model model, BeerForm beerForm) {
         beerDAO.put(beerForm);
@@ -198,14 +260,16 @@ public class BeerController {
     }
 
 
+    @Secured(value = { "ROLE_ADMIN" })
     @RequestMapping(value = ADD, method = RequestMethod.POST)
     public String addPost(Model model, BeerForm beerForm) {
         beerDAO.add(beerForm);
 
         return "redirect:" + LIST;
     }
-    
-    
+
+
+    @Secured(value = { "ROLE_ADMIN" })
     @RequestMapping(value = DELETE, method = RequestMethod.POST)
     public String delete(Model model, BeerForm beerForm) {
         beerDAO.delete(beerForm);
@@ -216,6 +280,8 @@ public class BeerController {
 
     @RequestMapping(value = FILTER, method = RequestMethod.GET)
     public String filterGet(Model model) {
+        model.addAttribute("button_action", LIST);
+
         List<Style> styles = styleDAO.getAll();
         model.addAttribute("styles", styles);
 
@@ -238,16 +304,33 @@ public class BeerController {
             @RequestParam(value = "rate", required = false) String rate,
             @RequestParam(value = "craft", required = false) String craft,
             @RequestParam(value = "star", required = false) String star) {
-        //beerDAO.getBeerByParams(beerFilter);
 
         return "redirect:" + LIST;
     }
 
-    /*
-     * @RequestMapping(value = "/deleteBeer", method = RequestMethod.POST)
-     * public String deleteBeer(Model model, DeleteBeerByIdForm deleteBeer) {
-     * BeerDAO.deleteBeer(deleteBeer.getId());
-     * 
-     * return "redirect:/Beers"; }
-     */
+
+    @RequestMapping(value = SHOW, method = RequestMethod.GET)
+    public String showGet(Model model,
+            @RequestParam(value = "id", required = true) String id) {
+        Beer beer = beerDAO.getBeer(Long.parseLong(id));
+        BeerForm beerForm = new BeerForm(beer);
+        model.addAttribute("beerForm", beerForm);
+
+        List<Style> styles = styleDAO.getByBeerId(beer.getId());
+        model.addAttribute("styles", styles);
+
+        List<Country> countries = countryDAO.getByBeerId(beer.getId());
+        model.addAttribute("countries", countries);
+
+        List<Brewery> breweries = breweryDAO.getByBeerId(beer.getId());
+        model.addAttribute("breweries", breweries);
+
+        List<Snack> snacks = snackDAO.getByBeerId(beer.getId());
+        model.addAttribute("snacks", snacks);
+
+        model.addAttribute("action", "Show");
+
+        return "show_beer_page";
+    }
+
 }

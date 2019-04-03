@@ -1,42 +1,35 @@
 <div xmlns:th="http://www.thymeleaf.org"
      style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;">
  
-  <a th:href="@{/beer/list}">All Beer</a>
-   
+  <a th:href="@{/beer/list}">Beer List</a>
    &nbsp; | &nbsp;
-    
-  <a th:href="@{/beer/add}">Add Beer</a>
-   
-   &nbsp; | &nbsp;
-   
   <a th:href="@{/beer/filter}">Beer Filter</a>
-   
    &nbsp; | &nbsp;
- 
   <a th:href="@{/style/list}">All Style</a>
-   
    &nbsp; | &nbsp;
- 
   <a th:href="@{/brewery/list}">All Brewery</a>
-     
    &nbsp; | &nbsp;
- 
   <a th:href="@{/country/list}">All Country</a>
-     
    &nbsp; | &nbsp;
- 
-  <a th:href="@{/snack/list}">All Snack</a>
-  
-   &nbsp; | &nbsp;  
-  
-  <a th:href="@{/admin}">Admin</a>    
-
+  <a th:href="@{/snack/list}">All Snack</a>  
    &nbsp; | &nbsp;     
-     
-  <a th:href="@{/user/info}">User Info</a>
+  <a th:href="@{/login}">Login</a>
   
-     &nbsp; | &nbsp;     
-     
-  <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
-
+  <div th:if="${#authorization.expression('hasAuthority(''user'')')}">
+	  </br>
+	  <a th:href="@{/user/beer/list}">User Beer List</a>
+	   &nbsp; | &nbsp;
+	  <a th:href="@{/user/beer/filter}">User Beer Filter</a>
+	   &nbsp; | &nbsp;     
+	  <a th:href="@{/user/info}">User Info</a>
+	   &nbsp; | &nbsp;     
+	  <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
+  </div>
+  
+  <div th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+     &nbsp; | &nbsp;
+  <a th:href="@{/beer/add}">Add Beer</a>
+    &nbsp; | &nbsp;  
+    <a th:href="@{/admin}">Admin</a> 
+  </div>
 </div>

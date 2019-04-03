@@ -72,6 +72,14 @@ public class CountryDAO extends JdbcDaoSupport {
             return null;
         }
     }
+    
+    public List<Country> getByBeerId(long id) {
+        String sql = CountryMapper.SELECT_BY_BEER_ID;
+        Object[] params = new Object[] { id };
+        CountryMapper mapper = new CountryMapper();
+        List<Country> list = this.getJdbcTemplate().query(sql, params, mapper);
+        return list;
+    }
 
     public int add(Country country) {
         if (get(country.getName()) != null) {

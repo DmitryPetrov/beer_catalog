@@ -1,3 +1,4 @@
+
 package com.example.security.service;
 
 import java.util.ArrayList;
@@ -16,30 +17,33 @@ import com.example.security.dao.RoleDAO;
 import com.example.security.dao.UserDAO;
 import com.example.security.model.AppUser;
 
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
- 
+
     @Autowired
     private UserDAO UserDAO;
- 
+
     @Autowired
     private RoleDAO RoleDAO;
- 
+
+
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName)
+            throws UsernameNotFoundException {
         AppUser user = this.UserDAO.get(userName);
- 
+
         if (user == null) {
             System.out.println("User not found! " + userName);
-            throw new UsernameNotFoundException("User " + userName + " was not found in the database");
+            throw new UsernameNotFoundException(
+                    "User " + userName + " was not found in the database");
         }
- 
+
         System.out.println("Found User: " + user);
- 
+
         // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.RoleDAO.getRoleNames(user.getId());
- 
+        List<String> roleNames =
+                this.RoleDAO.getRoleNamesByUserId(user.getId());
+
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         if (roleNames != null) {
             for (String role : roleNames) {
@@ -49,8 +53,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
 
-        UserDetails userDetails = (UserDetails) new User(user.getName(), user.getEncrytedPassword(), grantList);
- 
+        UserDetails userDetails = (UserDetails) new User(user.getName(),
+                user.getEncrytedPassword(), grantList);
+
         return userDetails;
     }
 

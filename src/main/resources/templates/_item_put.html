@@ -1,0 +1,21 @@
+<div xmlns:th="http://www.thymeleaf.org">
+ 
+  <div th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+  <form th:action="@{${put}}" th:object="${item}" method="POST">
+    <fieldset>
+      <legend th:utext="'Change ' + ${name}">..</legend>
+      <p>
+          <label>Change name from</label>
+          <select th:field="*{id}">
+          <option value="0"> -- </option>
+          <option th:each="item : ${list}" th:value="${item.id}" th:utext="${item.name} + ' (#' + ${item.id} + ')'">..</option>
+        </select>
+      </p>
+      <p>
+        to <input type="text" th:field="*{name}" th:value="${item.name}" /> <input type="submit" value="Change" />
+      </p>
+    </fieldset>
+  </form>
+  </div>
+  
+</div>  

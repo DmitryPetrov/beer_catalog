@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ public class UserDAO extends JdbcDaoSupport {
 
 
     public AppUser get(String userName) {
-        String sql = UserMapper.BASE_SQL + " WHERE name = ? ";
+        String sql = UserMapper.SELECT_BY_NAME;
 
         Object[] params = new Object[] { userName };
         UserMapper mapper = new UserMapper();
@@ -35,4 +36,14 @@ public class UserDAO extends JdbcDaoSupport {
             return null;
         }
     }
+
+
+    public int add(String name, String password) {
+        String sql = UserMapper.INSERT;
+        Object[] params = new Object[] { name,
+                new BCryptPasswordEncoder().encode(password) };
+        int countUpdated = this.getJdbcTemplate().update(sql, params);
+        return countUpdated;
+    }
+
 }

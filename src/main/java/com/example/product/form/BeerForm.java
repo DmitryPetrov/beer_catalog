@@ -7,6 +7,7 @@ import com.example.product.model.Beer;
 import com.example.product.model.Brewery;
 import com.example.product.model.Country;
 import com.example.product.model.Style;
+import com.example.security.model.UserBeer;
 
 public class BeerForm {
 
@@ -75,6 +76,18 @@ public class BeerForm {
         this.breweries = breweries;
         this.countries = countries;
         this.styles = styles;
+    }
+
+
+    public BeerForm(UserBeer userBeer) {
+        this.id = userBeer.getIdBeer();
+        this.rate = userBeer.getRate();
+        this.count = userBeer.getCount();
+        this.star = userBeer.isStar();
+        this.craft = userBeer.isCraft();
+        this.name = userBeer.getName();
+        this.description = userBeer.getDescription();
+        this.photo = userBeer.getPhoto();
     }
 
 
