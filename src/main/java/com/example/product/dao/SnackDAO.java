@@ -72,6 +72,14 @@ public class SnackDAO extends JdbcDaoSupport {
             return null;
         }
     }
+    
+    public List<Snack> getByBeerId(long id) {
+        String sql = SnackMapper.SELECT_BY_BEER_ID;
+        Object[] params = new Object[] { id };
+        SnackMapper mapper = new SnackMapper();
+        List<Snack> list = this.getJdbcTemplate().query(sql, params, mapper);
+        return list;
+    }
 
     public int add(Snack snack) {
         if (get(snack.getName()) != null) {

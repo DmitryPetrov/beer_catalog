@@ -72,6 +72,14 @@ public class StyleDAO extends JdbcDaoSupport {
             return null;
         }
     }
+    
+    public List<Style> getByBeerId(long id) {
+        String sql = StyleMapper.SELECT_BY_BEER_ID;
+        Object[] params = new Object[] { id };
+        StyleMapper mapper = new StyleMapper();
+        List<Style> list = this.getJdbcTemplate().query(sql, params, mapper);
+        return list;
+    }
 
     public int add(Style style) {
         if (get(style.getName()) != null) {

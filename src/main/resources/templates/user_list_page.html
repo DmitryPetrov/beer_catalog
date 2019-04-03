@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>All Beer</title>
-<link th:href="@{../css/style.css}" rel="stylesheet">
+<link th:href="@{../../css/style.css}" rel="stylesheet">
 </head>
 
 <body>
@@ -30,7 +30,7 @@
           <td th:utext="${beer.craft}">..</td>
           <td>
             <form th:action="@{${button_action}}" method="GET">
-            <input type="hidden" name="id" th:value="${beer.id}"/>
+            <input type="hidden" name="id" th:value="${beer.idBeer}"/>
               <input type="submit" th:value="${button_name}" /></form></td>
         </tr>
       </table>

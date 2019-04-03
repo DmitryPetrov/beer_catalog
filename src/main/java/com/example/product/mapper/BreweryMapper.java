@@ -15,6 +15,9 @@ public class BreweryMapper implements RowMapper<Brewery> {
             "SELECT * FROM brewery WHERE id = ? ";
     public static final String SELECT_BY_NAME =
             "SELECT * FROM brewery WHERE name = ? ";
+    public static final String SELECT_BY_BEER_ID =
+            "SELECT * FROM brewery WHERE id IN (SELECT id_brewery FROM beer_brewery WHERE id_beer = ?) "; 
+    
     public static final String INSERT =
             "INSERT INTO brewery(name) VALUES (?) ON CONFLICT DO NOTHING";
     public static final String UPDATE_NAME_BY_ID =

@@ -23,45 +23,13 @@
   </fieldset>
 
   <br>
-  <form th:action="@{${add}}" th:object="${item}" method="POST">
-    <fieldset>
-      <legend th:utext="'Add ' + ${name}">..</legend>
-      <p>
-        Name <input type="text" th:field="*{name}" /> <input type="submit" value="Add" />
-      </p>
-    </fieldset>
-  </form>
+	<th:block th:include="/_item_add"></th:block>
 
   <br>
-  <form th:action="@{${put}}" th:object="${item}" method="POST">
-    <fieldset>
-      <legend th:utext="'Change ' + ${name}">..</legend>
-      <p>
-          <label>Change name from</label>
-          <select th:field="*{id}">
-          <option value="0"> -- </option>
-          <option th:each="item : ${list}" th:value="${item.id}" th:utext="${item.name} + ' (#' + ${item.id} + ')'">..</option>
-        </select>
-      </p>
-      <p>
-        to <input type="text" th:field="*{name}" th:value="${item.name}" /> <input type="submit" value="Change" />
-      </p>
-    </fieldset>
-  </form>
+	<th:block th:include="/_item_put"></th:block>
 
   <br>
-  <div th:if="${#authorization.expression('hasAuthority(''admin'')')}">
-  <form th:action="@{${delete}}" th:object="${item}" method="POST">
-    <fieldset>
-      <legend th:utext="'! DELETE ' + ${name} + ' !'">..</legend>
-      <label>Delete style</label>
-      <select th:field="*{id}">
-        <option value="0"> -- </option>
-        <option th:each="item : ${list}" th:value="${item.id}" th:utext="${item.name} + ' (#' + ${item.id} + ')'">..</option>
-      </select> <input type="submit" value="Delete" />
-    </fieldset>
-  </form>
-  </div>
+	<th:block th:include="/_item_delete"></th:block>
 
 </body>
 </html>

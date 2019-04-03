@@ -15,6 +15,9 @@ public class StyleMapper implements RowMapper<Style> {
             "SELECT * FROM style WHERE id = ? ";
     public static final String SELECT_BY_NAME =
             "SELECT * FROM style WHERE name = ? ";   
+    public static final String SELECT_BY_BEER_ID =
+            "SELECT * FROM style WHERE id IN (SELECT id_style FROM beer_style WHERE id_beer = ?) ";   
+    
     public static final String INSERT = "INSERT INTO style(name) VALUES (?) ON CONFLICT DO NOTHING";   
     public static final String UPDATE_NAME_BY_ID =
             "UPDATE style SET name = ? WHERE id = ? ";

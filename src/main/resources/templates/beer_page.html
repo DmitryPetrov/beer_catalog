@@ -86,6 +86,7 @@
     </form>
   </fieldset>
     
+  <div th:if="${#authorization.expression('hasAuthority(''admin'')')}">  
   <br>  
   <fieldset>
   <legend>! DELETE beer !</legend>
@@ -94,6 +95,7 @@
 		<input type="submit" value="DELETE" />
     </form>
   </fieldset>
+  </div>
 
 </body>
 </html>

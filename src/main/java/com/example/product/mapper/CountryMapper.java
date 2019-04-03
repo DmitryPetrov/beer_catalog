@@ -15,6 +15,9 @@ public class CountryMapper implements RowMapper<Country> {
             "SELECT * FROM country WHERE id = ? ";
     public static final String SELECT_BY_NAME =
             "SELECT * FROM country WHERE name = ? ";
+    public static final String SELECT_BY_BEER_ID =
+            "SELECT * FROM country WHERE id IN (SELECT id_country FROM beer_country WHERE id_beer = ?) "; 
+    
     public static final String INSERT = "INSERT INTO country(name) VALUES (?) ON CONFLICT DO NOTHING";
     public static final String UPDATE_NAME_BY_ID =
             "UPDATE country SET name = ? WHERE id = ? ";

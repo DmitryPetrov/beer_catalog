@@ -29,17 +29,15 @@ import com.example.product.model.Style;
 @Repository
 @Transactional
 public class BeerDAO extends JdbcDaoSupport {
-    
+
     @Autowired
     private BeerStyleDAO beerStyleDAO;
     @Autowired
     private BeerCountryDAO beerCountryDAO;
     @Autowired
     private BeerBreweryDAO beerBreweryDAO;
-    @Autowired
-    private BeerSnackDAO beerSnackDAO;
 
-    
+
     @Autowired
     public BeerDAO(DataSource dataSource) {
         this.setDataSource(dataSource);
@@ -261,7 +259,7 @@ public class BeerDAO extends JdbcDaoSupport {
         params[7] = beerForm.getId();
 
         String sql = BeerMapper.UPDATE;
-        
+
         int countUpdated = this.getJdbcTemplate().update(sql, params);
 
         List<Brewery> breweryList = beerForm.getBreweries();
@@ -295,14 +293,7 @@ public class BeerDAO extends JdbcDaoSupport {
         String sql = BeerMapper.DELETE;
 
         int countUpdated = this.getJdbcTemplate().update(sql, params);
-
-        beerBreweryDAO.deleteByIdBeer(beerForm.getId());
-        beerStyleDAO.deleteByIdBeer(beerForm.getId());
-        beerCountryDAO.deleteByIdBeer(beerForm.getId());
-        beerSnackDAO.deleteByIdBeer(beerForm.getId());
-
         return countUpdated;
-        
     }
 
 }

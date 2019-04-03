@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.security.mapper.RoleMapper;
+
 @Repository
 @Transactional
 public class RoleDAO extends JdbcDaoSupport {
@@ -20,10 +22,8 @@ public class RoleDAO extends JdbcDaoSupport {
     }
 
 
-    public List<String> getRoleNames(Long userId) {
-        String sql = "SELECT name FROM user_role, role "
-                + "WHERE user_role.role_id = role.id "
-                + "AND user_role.user_id = ? ";
+    public List<String> getRoleNamesByUserId(Long userId) {
+        String sql = RoleMapper.SELECT_ROLENAME_BY_USERID;
 
         Object[] params = new Object[] { userId };
 
