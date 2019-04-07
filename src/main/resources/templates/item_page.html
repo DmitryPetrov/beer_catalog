@@ -6,7 +6,7 @@
 </head>
 
 <body>
-  <th:block th:include="/_menu"></th:block>
+  <th:block th:include="_menu"></th:block>
 
   <fieldset>
     <legend th:utext="'All ' + ${name}">..</legend>
@@ -23,13 +23,13 @@
   </fieldset>
 
   <br>
-	<th:block th:include="/_item_add"></th:block>
+	<th:block th:include="_item_add"></th:block>
 
   <br>
-	<th:block th:include="/_item_put"></th:block>
+	<th:block th:include="_item_put"></th:block>
 
   <br>
-	<th:block th:include="/_item_delete"></th:block>
+	<th:block th:include="_item_delete"></th:block>
 
 </body>
 </html>

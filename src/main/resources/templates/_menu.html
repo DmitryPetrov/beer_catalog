@@ -27,7 +27,6 @@
   </div>
   
   <div th:if="${#authorization.expression('hasAuthority(''admin'')')}">
-     &nbsp; | &nbsp;
   <a th:href="@{/beer/add}">Add Beer</a>
     &nbsp; | &nbsp;  
     <a th:href="@{/admin}">Admin</a> 
