@@ -52,7 +52,7 @@ public class UserBeerDAO extends JdbcDaoSupport {
     public List<UserBeer> getBeerByBeerNameForUser(String userName,
             String beerName) {
         String sql = UserBeerMapper.SELECT_BY_USERNAME_AND_BEERNAME;
-        Object[] params = new Object[] { userName, beerName };
+        Object[] params = new Object[] { userName, "%" + beerName + "%" };
         UserBeerMapper mapper = new UserBeerMapper();
         List<UserBeer> list = this.getJdbcTemplate().query(sql, params, mapper);
         return list;

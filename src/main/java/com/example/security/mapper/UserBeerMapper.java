@@ -70,7 +70,7 @@ public class UserBeerMapper implements RowMapper<UserBeer> {
             + "AND beer.craft = ? ";
 
     public static final String SELECT_BY_USERNAME_AND_BEERNAME = BASE
-            + "AND beer.name ILIKE '%'||:?||'%' ";
+            + "AND beer.name ILIKE ? ";
 
     
     @Override

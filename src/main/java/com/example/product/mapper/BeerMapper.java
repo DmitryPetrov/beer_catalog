@@ -32,7 +32,7 @@ public class BeerMapper implements RowMapper<Beer> {
     public static final String SELECT_BY_STAR = "SELECT * FROM beer WHERE star = ? ";
     public static final String SELECT_BY_CRAFT = "SELECT * FROM beer WHERE craft = ? ";
 
-    public static final String SELECT_BY_NAME = "SELECT * FROM beer WHERE name ILIKE '%'||:?||'%' ";
+    public static final String SELECT_BY_NAME = "SELECT * FROM beer WHERE name ILIKE ? ";
 
     @Override
     public Beer mapRow(ResultSet rs, int rowNum) throws SQLException {
