@@ -116,39 +116,39 @@ CREATE TABLE persistent_logins (
     username VARCHAR(64) NOT NULL,
     series VARCHAR(64) PRIMARY KEY,
     token VARCHAR(64) NOT NULL,
-    last_used TIMESTAMP NOT NULL,    
+    last_used TIMESTAMP NOT NULL    
 );
 
 
 
 
 INSERT INTO beer (rate, count, star, craft, name, description, photo) VALUES  
-(50, 1, FALSE, FALSE, 'сидр №1', 'сидр №1 описание', ''),
-(65, 1, FALSE, FALSE, 'сидр №2', 'сидр №2 описание', ''),
-(75, 2, FALSE, FALSE, 'сидр №3', 'сидр №3 описание', ''),
-(50, 1, FALSE, FALSE, 'лаггер №1', 'лаггер №1 описание', ''),
-(65, 1, FALSE, FALSE, 'лаггер №2', 'лаггер №2 описание', ''),
-(75, 2, FALSE, FALSE, 'лаггер №3', 'лаггер №3 описание', ''),
-(50, 1, FALSE, FALSE, 'эль №1', 'эль №1 описание', ''),
-(65, 1, FALSE, FALSE, 'эль №2', 'эль №2 описание', ''),
-(75, 2, FALSE, FALSE, 'эль №3', 'эль №3 описание', ''),
-(50, 1, FALSE, FALSE, 'стаут №1', 'стаут №1 описание', ''),
-(65, 1, FALSE, FALSE, 'стаут №2', 'стаут №2 описание', ''),
-(75, 2, FALSE, FALSE, 'стаут №3', 'стаут №3 описание', ''),
-(50, 1, FALSE, FALSE, 'IPA №1', 'IPA №1 описание', ''),
-(65, 1, FALSE, FALSE, 'IPA №2', 'IPA №2 описание', ''),
-(75, 2, FALSE, FALSE, 'IPA №3', 'IPA №3 описание', ''),
-(50, 1, FALSE, FALSE, 'пшеничное №1', 'пшеничное №1 описание', ''),
-(65, 1, FALSE, FALSE, 'пшеничное №2', 'пшеничное №2 описание', ''),
-(75, 2, FALSE, FALSE, 'пшеничное №3', 'пшеничное №3 описание', ''),
-(50, 1, FALSE, FALSE, 'вишневое №1', 'вишневое №1 описание', ''),
-(65, 1, FALSE, FALSE, 'вишневое №2', 'вишневое №2 описание', ''),
-(75, 2, FALSE, FALSE, 'вишневое №3', 'вишневое №3 описание', '');
+(50, 1, FALSE, FALSE, 'cider #1', 'cider #1 admin description', ''),
+(65, 1, FALSE, FALSE, 'cider #2', 'cider #2 admin description', ''),
+(75, 2, FALSE, FALSE, 'cider #3', 'cider #3 admin description', ''),
+(50, 1, FALSE, FALSE, 'lager #1', 'lager #1 admin description', ''),
+(65, 1, FALSE, FALSE, 'lager #2', 'lager #2 admin description', ''),
+(75, 2, FALSE, FALSE, 'lager #3', 'lager #3 admin description', ''),
+(50, 1, FALSE, FALSE, 'ale #1', 'ale #1 admin description', ''),
+(65, 1, FALSE, FALSE, 'ale #2', 'ale #2 admin description', ''),
+(75, 2, FALSE, FALSE, 'ale #3', 'ale #3 admin description', ''),
+(50, 1, FALSE, FALSE, 'stout #1', 'stout #1 admin description', ''),
+(65, 1, FALSE, FALSE, 'stout #2', 'stout #2 admin description', ''),
+(75, 2, FALSE, FALSE, 'stout #3', 'stout #3 admin description', ''),
+(50, 1, FALSE, FALSE, 'IPA #1', 'IPA #1 admin description', ''),
+(65, 1, FALSE, FALSE, 'IPA #2', 'IPA #2 admin description', ''),
+(75, 2, FALSE, FALSE, 'IPA #3', 'IPA #3 admin description', ''),
+(50, 1, FALSE, FALSE, 'weissbier #1', 'weissbier #1 admin description', ''),
+(65, 1, FALSE, FALSE, 'weissbier #2', 'weissbier #2 admin description', ''),
+(75, 2, FALSE, FALSE, 'weissbier #3', 'weissbier #3 admin description', ''),
+(50, 1, FALSE, FALSE, 'kriek #1', 'kriek #1 admin description', ''),
+(65, 1, FALSE, FALSE, 'kriek #2', 'kriek #2 admin description', ''),
+(75, 2, FALSE, FALSE, 'kriek #3', 'kriek #3 admin description', '');
 
 INSERT INTO brewery(name) VALUES
-('ПИВОВАРНЯ №1'),
-('ПИВОВАРНЯ №2'),
-('ПИВОВАРНЯ №3');
+('brewery #1'),
+('brewery #2'),
+('brewery #3');
 
 INSERT INTO country(name) VALUES
 ('Russia'),
@@ -156,19 +156,19 @@ INSERT INTO country(name) VALUES
 ('England');
 
 INSERT INTO style(name) VALUES
-('сидр'),
-('лаггер'),
-('эль'),
-('стаут'),
+('cider'),
+('lager'),
+('ale'),
+('stout'),
 ('IPA'),
-('пшеничное'),
-('вишневое');
+('weissbier'),
+('kriek');
 
 INSERT INTO snack(name) VALUES
-('сыр'),
-('сухари'),
-('орехи'),
-('рыба');
+('chees'),
+('bbq ribs'),
+('salty nuts'),
+('chicken wings');
 
 INSERT INTO beer_brewery(id_beer, id_brewery) VALUES
 (2, 1),
@@ -229,9 +229,9 @@ INSERT INTO user_role (id_user, id_role) VALUES
 (2, 2);
 
 INSERT INTO user_beer (id_user, id_beer, rate, count, star, description) VALUES
-(2, 1, 65, 2, FALSE, 'пиво №1 пользовательское описание'),
-(2, 2, 30, 1, FALSE, 'пиво №2 пользовательское описание'),
-(2, 5, 90, 9, TRUE, 'пиво №5 пользовательское описание'),
-(2, 8, 75, 1, FALSE, 'пиво №8 пользовательское описание');
+(2, 1, 65, 2, FALSE, 'beer #1 user description'),
+(2, 2, 30, 1, FALSE, 'beer #2 user description'),
+(2, 5, 90, 9, TRUE, 'beer #5 user description'),
+(2, 8, 75, 1, FALSE, 'beer #8 user description');
 	
 
