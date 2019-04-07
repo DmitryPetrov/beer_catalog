@@ -18,6 +18,14 @@ th {
 	border: 1px solid black; /* Граница вокруг ячеек */
 }
 
+th.width_25 {
+	width: 25%;
+}
+
+th.checkbox_field {
+  background: white;
+}
+
 th.submit {
 	text-align: center;
 }
@@ -28,5 +36,23 @@ td {
 }
 
 fieldset {
-	width: 1000px;
+	width: 800px;
+}
+
+div.top_bar{
+ display:inline-block;
+}
+
+textarea {
+ width: 100%;
+ height: 100%;
+ font-size: 20px;
+ text-align: center;
+}
+
+input.number_input {
+ width: 100%;
+ height: 100%;
+ font-size: 20px;
+ text-align: center;
 }

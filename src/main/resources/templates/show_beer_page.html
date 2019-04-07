@@ -13,31 +13,31 @@
 
       <table>
         <tr>
-          <th>Bottle count</th>
-          <th th:text="*{beerForm.count}"></th>
-          <th>Rate</th>
-          <th th:text="*{beerForm.rate}"></th>
+          <th>Bottle count:</th>
+          <th><textarea readonly th:text="*{beerForm.count}"></textarea></th>
+          <th>Rate:</th>
+          <th><textarea readonly th:text="*{beerForm.rate}"></textarea></th>
         </tr>
 
         <tr>
-          <th>Name</th>
-          <th th:text="*{beerForm.name}" colspan="3" ></th>
+          <th>Name:</th>
+          <th colspan="3" ><textarea readonly th:text="*{beerForm.name}"></textarea></th>
         </tr>
 
         <tr>
-          <th>Description</th>
-          <th th:text="*{beerForm.description}" colspan="3"></textarea></th>
+          <th>Description:</th>
+          <th colspan="3"><textarea readonly th:text="*{beerForm.description}"></textarea></th>
         </tr>
 
         <tr>
-          <th>Favorite</th>
-          <th th:text="*{beerForm.star}? 'yes': 'no'"></th>
-          <th>Craft</th>
-          <th th:text="*{beerForm.craft}? 'yes': 'no'"></th>
+          <th>Favorite:</th>
+          <th><textarea readonly th:text="*{beerForm.star}? 'yes': 'no'"></textarea></th>
+          <th>Craft:</th>
+          <th><textarea readonly th:text="*{beerForm.craft}? 'yes': 'no'"></textarea></th>
         </tr>
         
         <tr>
-          <th>Style</th>
+          <th>Style:</th>
     			<th colspan="3"><ul>
     			  <li th:each="style : ${styles}">
     			  <label th:text="${style.name}"></label></li>
@@ -45,7 +45,7 @@
         </tr>
 
         <tr>
-          <th>Country</th>
+          <th>Country:</th>
     			<th colspan="3"><ul>
     			  <li th:each="country : ${countries}">
     			  <label th:text="${country.name}"></label></li>
@@ -53,7 +53,7 @@
         </tr>
         
         <tr>
-          <th>Brewery</th>
+          <th>Brewery:</th>
     			<th colspan="3"><ul>
     			  <li th:each="brewery : ${breweries}">
     			  <label th:text="${brewery.name}"></label></li>
@@ -61,7 +61,7 @@
         </tr>
         
         <tr>
-          <th>Snack</th>
+          <th>Snack:</th>
     			<th colspan="3"><ul>
     			  <li th:each="snack : ${snacks}">
     			  <label th:text="${snack.name}"></label></li>
@@ -69,8 +69,8 @@
         </tr>
 
         <tr>
-          <th>Photo</th>
-          <th colspan="3" th:text="*{beerForm.photo}"></textarea></th>
+          <th>Photo:</th>
+          <th colspan="3" th:text="*{beerForm.photo}"></th>
         </tr>
 
       </table>

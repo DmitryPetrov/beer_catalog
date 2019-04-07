@@ -14,69 +14,66 @@
     <form th:action="@{${ref_put}}" th:object="${beerForm}" method="POST">
       <table>
         <tr>
-          <th>Bottle count</th>
-          <th><input th:field="*{count}" type="number" size="6" min="1" step="1"></th>
-          <th>Rate</th>
-          <th><input th:field="*{rate}" type="number" size="6" min="0" max="100" step="5"></th>
-        </tr>
-
+          <th class="width_25">Bottle count:</th>
+          <th class="width_25"><input th:field="*{count}" type="number" size="6" min="1" step="1" class="number_input"></th>
+          <th class="width_25">Rate:</th>
+          <th class="width_25"><input th:field="*{rate}" type="number" size="6" min="0" max="100" step="5" class="number_input"></th>
+          </tr>
+      
         <tr>
-          <th>Name</th>
-          <th colspan="3"><textarea readonly th:field="*{name}" cols="50" rows="2" required></textarea></th>
-        </tr>
-
+          <th class="width_25">Name:</th>
+          <th colspan="3"><textarea th:field="*{name}" cols="50" rows="2" required></textarea></th>
+          </tr>
+      
         <tr>
-          <th>Description</th>
+          <th class="width_25">Description:</th>
           <th colspan="3"><textarea th:field="*{description}" cols="50" rows="3"></textarea></th>
-        </tr>
-
+          </tr>
+      
         <tr>
-          <th>Favorite</th>
-          <th><input th:field="*{star}" type="checkbox"></th>
-          <th>Craft</th>
-          <th><input th:field="*{craft}" readonly type="checkbox"></th>
-        </tr>
+          <th class="width_25">Favorite:</th>
+          <th class="width_25  checkbox_field"><input th:field="*{star}" type="checkbox"></th>
+          <th class="width_25">Craft:</th>
+          <th class="width_25 checkbox_field"><input th:field="*{craft}" type="checkbox"></th>
+          </tr>
         
         <tr>
-          <th>Style</th>
-			<th colspan="3"><ul>
-			  <li th:each="style : ${styles}">
-			  <label th:text="${style.name}"></label></li>
-			</ul></th>        
-        </tr>
+          <th class="width_25">Style:</th>
+    			<th colspan="3" class="checkbox_field"><ul>
+    			  <li th:each="style : ${styles}">
+    			  <label th:text="${style.name}"></label></li></ul></th>        
+          </tr>
 
         <tr>
-          <th>Country</th>
-			<th colspan="3"><ul>
-			  <li th:each="country : ${countries}">
-			  <label th:text="${country.name}"></label></li>
-			</ul></th>   
-        </tr>
+          <th class="width_25">Country:</th>
+    			<th colspan="3" class="checkbox_field"><ul>
+    			  <li th:each="country : ${countries}">
+    			  <label th:text="${country.name}"></label></li></ul></th>   
+          </tr>
         
         <tr>
-          <th>Brewery</th>
-			<th colspan="3"><ul>
-			  <li th:each="brewery : ${breweries}">
-			  <label th:text="${brewery.name}"></label></li>
-			</ul></th>   
-        </tr>
+          <th class="width_25">Brewery:</th>
+    			<th colspan="3" class="checkbox_field"><ul>
+    			  <li th:each="brewery : ${breweries}">
+    			  <label th:text="${brewery.name}"></label></li></ul></th>   
+          </tr>
         
         <tr>
-          <th>Snack</th>
-			<th colspan="3"><ul>
-			  <li th:each="snack : ${snacks}">
-			  <label th:text="${snack.name}"></label></li>
-			</ul></th>   
-        </tr>
+          <th class="width_25">Snack:</th>
+    			<th colspan="3" class="checkbox_field"><ul>
+    			  <li th:each="snack : ${snacks}">
+    			  <label th:text="${snack.name}"></label></li></ul></th>   
+          </tr>
 
         <tr>
-          <th>Photo</th>
+          <th class="width_25">Photo:</th>
           <th colspan="3"><textarea readonly th:field="*{photo}" cols="50" rows="1"></textarea></th>
-        </tr>
+          </tr>
 
         <tr>
-          <th colspan="4" class="submit"><input type="hidden" th:field="*{id}" th:value="${id}"/><input type="submit" value="Submit" /></th>
-        </tr>
+          <th colspan="4" class="submit"><input type="hidden" th:field="*{id}" th:value="${id}"/>
+          <input type="submit" value="Submit" /></th>
+          </tr>
 
       </table>
     </form>
@@ -90,6 +87,7 @@
 		<input type="submit" value="DELETE" />
     </form>
   </fieldset>
-
+  <br><br>
+  
 </body>
 </html>

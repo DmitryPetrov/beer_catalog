@@ -15,8 +15,8 @@
    &nbsp; | &nbsp;     
   <a th:href="@{/login}">Login</a>
   
-  <div th:if="${#authorization.expression('hasAuthority(''user'')')}">
-	  </br>
+  <br><br>
+  <div th:if="${#authorization.expression('hasAuthority(''user'')')}" class="top_bar">
 	  <a th:href="@{/user/beer/list}">User Beer List</a>
 	   &nbsp; | &nbsp;
 	  <a th:href="@{/user/beer/filter}">User Beer Filter</a>
@@ -24,11 +24,14 @@
 	  <a th:href="@{/user/info}">User Info</a>
 	   &nbsp; | &nbsp;     
 	  <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
+    
   </div>
   
-  <div th:if="${#authorization.expression('hasAuthority(''admin'')')}">
-  <a th:href="@{/beer/add}">Add Beer</a>
+  <div th:if="${#authorization.expression('hasAuthority(''admin'')')}" class="top_bar">
+    &nbsp; | &nbsp;&nbsp;&nbsp; ~ &nbsp;&nbsp;&nbsp; | &nbsp;
+    <a th:href="@{/beer/add}">Add Beer</a>
     &nbsp; | &nbsp;  
     <a th:href="@{/admin}">Admin</a> 
   </div>
+
 </div>
